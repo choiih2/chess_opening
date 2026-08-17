@@ -16,12 +16,17 @@ interface Props {
   expanded: Set<string>;
   /** 국면별 실전 통계. 있으면 그 순서로 자식을 늘어놓는다. */
   moveCounts: Map<string, Record<string, number>>;
+<<<<<<< HEAD
   mode: "study" | "practice";
   favorites: Set<string>;
   onToggle: (id: string) => void;
   onSelect: (node: OpeningNode) => void;
   onToggleFavorite: (id: string) => void;
   onHome: () => void;
+=======
+  onToggle: (id: string) => void;
+  onSelect: (node: OpeningNode) => void;
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 }
 
 function moveNumber(depth: number) {
@@ -30,6 +35,7 @@ function moveNumber(depth: number) {
   return depth % 2 === 1 ? `${n}.` : `${n}...`;
 }
 
+<<<<<<< HEAD
 function FavStar({
   active,
   onToggle,
@@ -52,6 +58,8 @@ function FavStar({
   );
 }
 
+=======
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 function Row({
   node,
   parent,
@@ -63,8 +71,12 @@ function Row({
   level: number;
   props: Props;
 }) {
+<<<<<<< HEAD
   const { selectedId, expanded, moveCounts, favorites, onToggle, onSelect, onToggleFavorite } =
     props;
+=======
+  const { selectedId, expanded, moveCounts, onToggle, onSelect } = props;
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
   const isOpen = expanded.has(node.id);
   const hasKids = node.children.length > 0;
   const lastMove = node.moves[node.moves.length - 1];
@@ -94,11 +106,14 @@ function Row({
           <span className="nm">{toKorean(shortName(node, parent))}</span>
           {hasKids && <span className="kids">{node.children.length}</span>}
         </button>
+<<<<<<< HEAD
 
         <FavStar
           active={favorites.has(node.id)}
           onToggle={() => onToggleFavorite(node.id)}
         />
+=======
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
       </div>
 
       {isOpen && hasKids && (
@@ -124,6 +139,7 @@ export default function OpeningTree(props: Props) {
     () => searchOpenings(props.allRows, query),
     [props.allRows, query]
   );
+<<<<<<< HEAD
   const favoriteNodes = useMemo(
     () =>
       [...props.favorites]
@@ -131,10 +147,13 @@ export default function OpeningTree(props: Props) {
         .filter((n): n is OpeningNode => !!n),
     [props.favorites, props.byId]
   );
+=======
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 
   return (
     <aside className="tree-pane">
       <div className="tree-head">
+<<<<<<< HEAD
         <div className="tree-head-top">
           <button className="home-link" onClick={props.onHome}>
             ‹ 모드 선택
@@ -143,6 +162,8 @@ export default function OpeningTree(props: Props) {
             {props.mode === "study" ? "학습" : "연습"}
           </span>
         </div>
+=======
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
         <h2 className="eyebrow">오프닝</h2>
         <input
           className="search"
@@ -154,6 +175,7 @@ export default function OpeningTree(props: Props) {
       </div>
 
       <div className="tree-scroll">
+<<<<<<< HEAD
         {!query.trim() && favoriteNodes.length > 0 && (
           <div className="fav-section">
             <h3 className="eyebrow">즐겨찾기</h3>
@@ -177,6 +199,8 @@ export default function OpeningTree(props: Props) {
           </div>
         )}
 
+=======
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
         {query.trim() ? (
           results.length ? (
             <ul className="flat">
@@ -185,6 +209,7 @@ export default function OpeningTree(props: Props) {
                 const node = props.byId.get(id);
                 return (
                   <li key={id}>
+<<<<<<< HEAD
                     <div
                       className={`tree-row flat-row${
                         props.selectedId === id ? " is-selected" : ""
@@ -202,6 +227,17 @@ export default function OpeningTree(props: Props) {
                         onToggle={() => props.onToggleFavorite(id)}
                       />
                     </div>
+=======
+                    <button
+                      className={`tree-row tree-label flat-row${
+                        props.selectedId === id ? " is-selected" : ""
+                      }`}
+                      onClick={() => node && props.onSelect(node)}
+                    >
+                      <span className="eco">{r.eco}</span>
+                      <span className="nm">{toKorean(r.name)}</span>
+                    </button>
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
                   </li>
                 );
               })}

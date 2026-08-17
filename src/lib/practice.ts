@@ -1,6 +1,10 @@
 import { ExplorerMove, ExplorerResult, scoreFor, total } from "./explorer";
 
+<<<<<<< HEAD
 export type Difficulty = "frequency" | "mainline" | "trappy" | "random" | "blunders";
+=======
+export type Difficulty = "frequency" | "mainline" | "trappy" | "random";
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 
 export const DIFFICULTY_LABELS: Record<
   Difficulty,
@@ -22,10 +26,13 @@ export const DIFFICULTY_LABELS: Record<
     name: "완전 랜덤",
     hint: "상위 5수 중 균등하게 고릅니다. 변칙 대응 훈련용입니다.",
   },
+<<<<<<< HEAD
   blunders: {
     name: "실수 유도",
     hint: "상대가 두면 자주 지는 수를 오히려 즐겨 둡니다. 응징하는 공격을 연습하세요.",
   },
+=======
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 };
 
 /** 이 국면의 표본이 너무 작으면 정석 범위를 벗어난 것으로 본다. */
@@ -58,6 +65,7 @@ function weightsFor(
       });
     }
 
+<<<<<<< HEAD
     case "blunders": {
       // trappy 의 반대: 상대 입장 승률이 낮은(=내가 응징하기 좋은) 수를 우선한다.
       return moves.map((m) => {
@@ -68,12 +76,73 @@ function weightsFor(
       });
     }
 
+=======
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
     case "frequency":
     default:
       return moves.map((m) => total(m));
   }
 }
 
+<<<<<<< HEAD
+=======
+export interface Hint {
+  san: string;
+  share: number; // 실전에서 이 수가 나오는 비율 (%)
+  score: number; // 이 수를 둔 쪽의 승률 (%)
+  games: number;
+}
+
+export interface Hints {
+  /** 가장 많이 두는 수. 언제나 있다. */
+  mainline: Hint;
+  /**
+   * 메인라인보다 덜 두는데 성적은 뚜렷하게 좋은 수.
+   * 조건을 만족하는 수가 없으면 null.
+   */
+  standout: Hint | null;
+}
+
+/** 표본이 이보다 적은 수는 우연일 수 있어 후보에서 뺀다. */
+const STANDOUT_MIN_GAMES = 30;
+/** 메인라인보다 승률이 이만큼(%p) 높아야 한다. */
+const STANDOUT_MIN_EDGE = 4;
+/** 절대 승률도 이 밑이면 "좋은 수"라고 부르기 어렵다. */
+const STANDOUT_MIN_SCORE = 50;
+
+export function analyzeHints(
+  result: ExplorerResult,
+  side: "w" | "b"
+): Hints | null {
+  const moves = result.moves.filter((m) => total(m) > 0);
+  if (!moves.length) return null;
+
+  const playTotal = moves.reduce((a, m) => a + total(m), 0);
+  const toHint = (m: ExplorerMove): Hint => ({
+    san: m.san,
+    share: (total(m) / playTotal) * 100,
+    score: scoreFor(m, side),
+    games: total(m),
+  });
+
+  // Explorer 는 이미 빈도순으로 주지만 순서를 믿지 않고 직접 고른다.
+  const mainMove = moves.reduce((a, b) => (total(b) > total(a) ? b : a));
+  const mainline = toHint(mainMove);
+
+  const candidates = moves
+    .filter((m) => m.san !== mainMove.san && total(m) >= STANDOUT_MIN_GAMES)
+    .map(toHint)
+    .filter(
+      (h) =>
+        h.score >= STANDOUT_MIN_SCORE &&
+        h.score - mainline.score >= STANDOUT_MIN_EDGE
+    )
+    .sort((a, b) => b.score - a.score);
+
+  return { mainline, standout: candidates[0] ?? null };
+}
+
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 export interface PickedMove {
   move: ExplorerMove;
   probability: number; // 이 모드에서 뽑힐 확률 (0~1)
