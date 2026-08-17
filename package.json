@@ -5,8 +5,14 @@
   "type": "module",
   "scripts": {
     "openings": "node scripts/build-openings.mjs",
+<<<<<<< HEAD
+    "engine": "node scripts/copy-engine.mjs",
+    "dev": "npm run openings && npm run engine && vite",
+    "build": "npm run openings && npm run engine && tsc -b && vite build",
+=======
     "dev": "npm run openings && vite",
     "build": "npm run openings && tsc -b && vite build",
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
     "preview": "vite preview"
   },
   "dependencies": {

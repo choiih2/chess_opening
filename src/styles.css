@@ -277,7 +277,40 @@ input {
 }
 
 .flat-row {
+<<<<<<< HEAD
+  padding-left: 12px;
+}
+
+.fav-star {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: #3f4654;
+  font-size: 13px;
+  padding: 4px 10px 4px 4px;
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+.fav-star:hover {
+  color: var(--muted);
+}
+
+.fav-star.is-fav {
+  color: var(--accent);
+}
+
+.fav-section {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.fav-section .eyebrow {
+  padding: 12px 12px 0;
+=======
   padding: 7px 12px;
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 }
 
 .eco {
@@ -326,6 +359,20 @@ input {
   margin: 6px 0 10px;
 }
 
+<<<<<<< HEAD
+.panel-head-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-head-top .fav-star {
+  font-size: 17px;
+  padding: 0;
+}
+
+=======
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 .eco-chip {
   font-family: var(--mono);
   font-size: 11px;
@@ -420,6 +467,10 @@ input {
 
 .moves .san {
   font-weight: 600;
+<<<<<<< HEAD
+  white-space: nowrap;
+=======
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
   width: 60px;
 }
 
@@ -486,7 +537,12 @@ input {
 
 .subs .san {
   font-weight: 600;
+<<<<<<< HEAD
+  flex: 0 1 auto;
+  min-width: 52px;
+=======
   flex: 0 0 52px;
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 }
 
 .subs .eco {
@@ -615,6 +671,40 @@ input {
   color: #4a5160;
 }
 
+<<<<<<< HEAD
+/* ---------- 연습 모드 힌트 ---------- */
+
+.hint-panel {
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.hint-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.hint-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.hint-list .dot {
+  flex: 0 0 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: translateY(-1px);
+}
+
+=======
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 /* ---------- 반응형 ---------- */
 
 @media (max-width: 1080px) {
@@ -646,6 +736,136 @@ input {
   }
 }
 
+<<<<<<< HEAD
+/* ---------- 모드 선택 ---------- */
+
+.mode-select {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 14vh 24px 40px;
+}
+
+.mode-select h1 {
+  font-family: var(--display);
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin: 8px 0 32px;
+}
+
+.mode-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.mode-card {
+  text-align: left;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 24px 22px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.mode-card:hover {
+  border-color: var(--accent-dim);
+  background: var(--raise);
+}
+
+.mode-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent-dim);
+  padding: 2px 7px;
+  margin-bottom: 12px;
+}
+
+.mode-card h2 {
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin: 0 0 8px;
+}
+
+.mode-card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .mode-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- 트리 헤더 상단 바 ---------- */
+
+.tree-head-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.home-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+.home-link:hover {
+  color: var(--bone);
+}
+
+.mode-pill {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent-dim);
+  padding: 2px 7px;
+}
+
+/* ---------- 메인라인 배지 ---------- */
+
+.badge-main {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #16110a;
+  background: var(--accent);
+  padding: 1px 5px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.moves tr.is-main td {
+  background: #241c10;
+}
+
+.study-hint {
+  max-width: 62ch;
+}
+
+=======
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 /* ---------- 영문 원명 / 안내 배너 ---------- */
 
 .en-name {
@@ -681,6 +901,248 @@ input {
   color: var(--accent);
 }
 
+<<<<<<< HEAD
+/* ---------- 복기 모드 ---------- */
+
+.review-shell {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.review-board {
+  max-width: 1100px;
+}
+
+.review-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.review-shell h1 {
+  font-family: var(--display);
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 6px 0 16px;
+}
+
+.game-list {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.game-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  background: var(--panel);
+  border: 0;
+  padding: 10px 14px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+}
+
+.game-row:hover {
+  background: var(--raise);
+}
+
+.game-row .result {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 12px;
+  flex: 0 0 20px;
+}
+
+.result-win {
+  color: var(--good);
+}
+.result-loss {
+  color: var(--bad);
+}
+.result-draw {
+  color: var(--muted);
+}
+
+.game-row .opp {
+  flex: 0 0 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.game-row .rating {
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+.game-row .nm {
+  flex: 1;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.game-row .tc,
+.game-row .date {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 11.5px;
+}
+
+.trap-summary {
+  border-top: 0;
+  padding-top: 0;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.trap-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.trap-list button {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  background: var(--panel);
+  border: 0;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.trap-list button:hover {
+  background: var(--raise);
+}
+
+.trap-list .mv {
+  flex: 0 0 auto;
+}
+
+.trap-list .nm {
+  color: var(--good);
+}
+
+.move-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 480px;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+}
+
+.move-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  background: var(--panel);
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 7px 12px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+}
+
+.move-item:last-child {
+  border-bottom: 0;
+}
+
+.move-item:hover {
+  background: var(--raise);
+}
+
+.move-item.is-selected {
+  background: var(--raise);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+.tag-dot-blunder,
+.tag-dot-mistake {
+  background: var(--bad);
+}
+.tag-dot-inaccuracy {
+  background: var(--accent);
+}
+.tag-dot-trap {
+  background: var(--good);
+}
+
+.progress-bar {
+  height: 6px;
+  background: var(--line);
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.progress-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.2s;
+}
+
+.ply-detail {
+  border-left: 2px solid var(--line);
+  padding-left: 12px;
+}
+
+.ply-head {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.ply-detail.tag-blunder,
+.ply-detail.tag-mistake {
+  border-left-color: var(--bad);
+}
+.ply-detail.tag-inaccuracy {
+  border-left-color: var(--accent);
+}
+.ply-detail.tag-fine {
+  border-left-color: var(--good);
+}
+
+@media (max-width: 860px) {
+  .review-shell {
+    padding: 20px;
+  }
+  .game-row .opp {
+    flex-basis: 120px;
+  }
+  .game-row .nm {
+    display: none;
+=======
 /* ---------- 힌트 ---------- */
 
 .toggle.is-on {
@@ -818,5 +1280,6 @@ input {
   }
   .practice-side {
     order: 2;
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
   }
 }

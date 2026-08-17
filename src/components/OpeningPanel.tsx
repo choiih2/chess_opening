@@ -18,9 +18,19 @@ interface Props {
   sideToMove: "w" | "b";
   /** 이 국면의 실전 통계 기반 자식 정렬용 */
   childCounts?: Record<string, number>;
+<<<<<<< HEAD
+  mode: "study" | "practice";
+  favorites: Set<string>;
   onSelect: (n: OpeningNode) => void;
   onPractice: (side: "w" | "b") => void;
   onAddToRepertoire: (side: "w" | "b") => void;
+  onSwitchToPractice: () => void;
+  onToggleFavorite: (id: string) => void;
+=======
+  onSelect: (n: OpeningNode) => void;
+  onPractice: (side: "w" | "b") => void;
+  onAddToRepertoire: (side: "w" | "b") => void;
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 }
 
 function fmtCount(n: number) {
@@ -75,12 +85,29 @@ export default function OpeningPanel({
   loading,
   sideToMove,
   childCounts,
+<<<<<<< HEAD
+  mode,
+  favorites,
+  onSelect,
+  onPractice,
+  onAddToRepertoire,
+  onSwitchToPractice,
+  onToggleFavorite,
+}: Props) {
+  const t = stats ? total(stats) : 0;
+  const children = sortChildren(node, childCounts);
+  // Lichess Explorer 는 국면별 수를 이미 실전 빈도순으로 내려주므로, 통계가
+  // 있을 때는 첫 수가 곧 메인라인이다. 통계가 없으면 하위 변화 개수 1위로 대신한다.
+  const mainlineSan =
+    stats && stats.moves.length ? stats.moves[0].san : undefined;
+=======
   onSelect,
   onPractice,
   onAddToRepertoire,
 }: Props) {
   const t = stats ? total(stats) : 0;
   const children = sortChildren(node, childCounts);
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 
   return (
     <div className="panel">
@@ -93,24 +120,66 @@ export default function OpeningPanel({
       </nav>
 
       <header className="panel-head">
+<<<<<<< HEAD
+        <div className="panel-head-top">
+          <span className="eco-chip">{node.eco}</span>
+          <button
+            className={`fav-star${favorites.has(node.id) ? " is-fav" : ""}`}
+            onClick={() => onToggleFavorite(node.id)}
+            aria-label={favorites.has(node.id) ? "즐겨찾기 해제" : "즐겨찾기 추가"}
+            title={favorites.has(node.id) ? "즐겨찾기 해제" : "즐겨찾기 추가"}
+          >
+            {favorites.has(node.id) ? "★" : "☆"}
+          </button>
+        </div>
+=======
         <span className="eco-chip">{node.eco}</span>
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
         <h1>{toKorean(node.name)}</h1>
         <p className="en-name">{node.name}</p>
         <p className="line">{pgnLine(node.moves)}</p>
       </header>
 
       <div className="actions">
+<<<<<<< HEAD
+        {mode === "practice" ? (
+          <>
+            <button className="btn btn-primary" onClick={() => onPractice("w")}>
+              백으로 연습
+            </button>
+            <button className="btn btn-primary" onClick={() => onPractice("b")}>
+              흑으로 연습
+            </button>
+          </>
+        ) : (
+          <button className="btn btn-primary" onClick={onSwitchToPractice}>
+            이 오프닝으로 연습하기
+          </button>
+        )}
+=======
         <button className="btn btn-primary" onClick={() => onPractice("w")}>
           백으로 연습
         </button>
         <button className="btn btn-primary" onClick={() => onPractice("b")}>
           흑으로 연습
         </button>
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
         <button className="btn" onClick={() => onAddToRepertoire(sideToMove)}>
           이 수순을 레퍼토리에 추가
         </button>
       </div>
 
+<<<<<<< HEAD
+      {mode === "study" && (
+        <p className="notice study-hint">
+          <span className="badge-main">메인</span> 표시는 실전에서 가장 많이
+          나오는 수입니다. 통계 표와 하위 변화에서 어디로 갈라지는지 살펴보고,
+          다른 변화도 눌러 비교해 보세요.
+        </p>
+      )}
+
+=======
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
       {statsError ? (
         <p className="notice">{statsError}</p>
       ) : loading ? (
@@ -142,8 +211,18 @@ export default function OpeningPanel({
                 {stats.moves.slice(0, 5).map((m) => {
                   const share = (total(m) / t) * 100;
                   return (
+<<<<<<< HEAD
+                    <tr key={m.uci} className={m.san === mainlineSan ? "is-main" : undefined}>
+                      <td className="san">
+                        {m.san}
+                        {m.san === mainlineSan && (
+                          <span className="badge-main">메인</span>
+                        )}
+                      </td>
+=======
                     <tr key={m.uci}>
                       <td className="san">{m.san}</td>
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
                       <td className="share">
                         <span className="share-bar">
                           <span style={{ width: `${Math.min(share, 100)}%` }} />
@@ -180,10 +259,22 @@ export default function OpeningPanel({
         </h3>
         {children.length ? (
           <ul className="subs">
+<<<<<<< HEAD
+            {children.map((c, i) => (
+              <li key={c.id}>
+                <button onClick={() => onSelect(c)}>
+                  <span className="san">
+                    {c.moves[c.moves.length - 1]}
+                    {i === 0 && childCounts && (
+                      <span className="badge-main">메인</span>
+                    )}
+                  </span>
+=======
             {children.map((c) => (
               <li key={c.id}>
                 <button onClick={() => onSelect(c)}>
                   <span className="san">{c.moves[c.moves.length - 1]}</span>
+>>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
                   <span className="nm">{toKorean(shortName(c, node))}</span>
                   <span className="eco">{c.eco}</span>
                 </button>
