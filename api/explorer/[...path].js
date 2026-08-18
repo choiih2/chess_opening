@@ -10,11 +10,11 @@ export default async function handler(req, res) {
   }
 
   // /api/explorer/lichess?fen=... -> https://explorer.lichess.ovh/lichess?fen=...
-  const path = Array.isArray(req.query.path)
-    ? req.query.path.join("/")
-    : req.query.path ?? "";
-  const qs = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
-  const target = `https://explorer.lichess.ovh/${path}${qs}`;
+  // req.query.path 는 Vercel 라우팅에서 간헐적으로 비게 나와, req.url 의 경로를
+  // 직접 잘라 쓴다 (경로가 비면 도메인 루트로 가서 사람용 분석 페이지로 리다이렉트된다).
+  const { pathname, search } = new URL(req.url, "http://internal");
+  const path = pathname.replace(/^\/api\/explorer\//, "");
+  const target = `https://explorer.lichess.ovh/${path}${search}`;
 
   try {
     const upstream = await fetch(target, {

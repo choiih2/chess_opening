@@ -5,9 +5,9 @@ export default async function handler(req, res) {
     return res.status(501).json({ error: "요약 기능이 꺼져 있습니다." });
   }
 
-  const path = Array.isArray(req.query.path)
-    ? req.query.path.join("/")
-    : req.query.path ?? "";
+  // req.query.path 는 Vercel 라우팅에서 간헐적으로 비게 나와, req.url 의 경로를 직접 잘라 쓴다.
+  const { pathname } = new URL(req.url, "http://internal");
+  const path = pathname.replace(/^\/api\/anthropic\//, "");
 
   try {
     const upstream = await fetch(`https://api.anthropic.com/${path}`, {

@@ -1,10 +1,6 @@
 import { ExplorerMove, ExplorerResult, scoreFor, total } from "./explorer";
 
-<<<<<<< HEAD
 export type Difficulty = "frequency" | "mainline" | "trappy" | "random" | "blunders";
-=======
-export type Difficulty = "frequency" | "mainline" | "trappy" | "random";
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 
 export const DIFFICULTY_LABELS: Record<
   Difficulty,
@@ -26,13 +22,10 @@ export const DIFFICULTY_LABELS: Record<
     name: "완전 랜덤",
     hint: "상위 5수 중 균등하게 고릅니다. 변칙 대응 훈련용입니다.",
   },
-<<<<<<< HEAD
   blunders: {
     name: "실수 유도",
     hint: "상대가 두면 자주 지는 수를 오히려 즐겨 둡니다. 응징하는 공격을 연습하세요.",
   },
-=======
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 };
 
 /** 이 국면의 표본이 너무 작으면 정석 범위를 벗어난 것으로 본다. */
@@ -65,7 +58,6 @@ function weightsFor(
       });
     }
 
-<<<<<<< HEAD
     case "blunders": {
       // trappy 의 반대: 상대 입장 승률이 낮은(=내가 응징하기 좋은) 수를 우선한다.
       return moves.map((m) => {
@@ -76,16 +68,12 @@ function weightsFor(
       });
     }
 
-=======
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
     case "frequency":
     default:
       return moves.map((m) => total(m));
   }
 }
 
-<<<<<<< HEAD
-=======
 export interface Hint {
   san: string;
   share: number; // 실전에서 이 수가 나오는 비율 (%)
@@ -142,7 +130,6 @@ export function analyzeHints(
   return { mainline, standout: candidates[0] ?? null };
 }
 
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 export interface PickedMove {
   move: ExplorerMove;
   probability: number; // 이 모드에서 뽑힐 확률 (0~1)

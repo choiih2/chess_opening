@@ -277,7 +277,6 @@ input {
 }
 
 .flat-row {
-<<<<<<< HEAD
   padding-left: 12px;
 }
 
@@ -308,9 +307,6 @@ input {
 
 .fav-section .eyebrow {
   padding: 12px 12px 0;
-=======
-  padding: 7px 12px;
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 }
 
 .eco {
@@ -359,7 +355,6 @@ input {
   margin: 6px 0 10px;
 }
 
-<<<<<<< HEAD
 .panel-head-top {
   display: flex;
   align-items: center;
@@ -371,8 +366,6 @@ input {
   padding: 0;
 }
 
-=======
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 .eco-chip {
   font-family: var(--mono);
   font-size: 11px;
@@ -467,10 +460,7 @@ input {
 
 .moves .san {
   font-weight: 600;
-<<<<<<< HEAD
   white-space: nowrap;
-=======
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
   width: 60px;
 }
 
@@ -537,12 +527,8 @@ input {
 
 .subs .san {
   font-weight: 600;
-<<<<<<< HEAD
   flex: 0 1 auto;
   min-width: 52px;
-=======
-  flex: 0 0 52px;
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 }
 
 .subs .eco {
@@ -671,7 +657,6 @@ input {
   color: #4a5160;
 }
 
-<<<<<<< HEAD
 /* ---------- 연습 모드 힌트 ---------- */
 
 .hint-panel {
@@ -703,8 +688,6 @@ input {
   transform: translateY(-1px);
 }
 
-=======
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 /* ---------- 반응형 ---------- */
 
 @media (max-width: 1080px) {
@@ -736,7 +719,6 @@ input {
   }
 }
 
-<<<<<<< HEAD
 /* ---------- 모드 선택 ---------- */
 
 .mode-select {
@@ -864,8 +846,6 @@ input {
   max-width: 62ch;
 }
 
-=======
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 /* ---------- 영문 원명 / 안내 배너 ---------- */
 
 .en-name {
@@ -901,7 +881,6 @@ input {
   color: var(--accent);
 }
 
-<<<<<<< HEAD
 /* ---------- 복기 모드 ---------- */
 
 .review-shell {
@@ -1142,69 +1121,7 @@ input {
   }
   .game-row .nm {
     display: none;
-=======
-/* ---------- 힌트 ---------- */
-
-.toggle.is-on {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.hints {
-  border: 1px solid var(--line);
-  background: var(--panel);
-  padding: 12px 14px;
-  margin-top: 12px;
-}
-
-.hint-row {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  flex-wrap: wrap;
-  padding: 5px 0;
-}
-
-.hint-row + .hint-row {
-  border-top: 1px solid var(--line);
-}
-
-.swatch {
-  width: 9px;
-  height: 9px;
-  flex: 0 0 9px;
-  align-self: center;
-}
-
-.hint-row .san {
-  font-weight: 600;
-  min-width: 44px;
-}
-
-.tag {
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border: 1px solid var(--accent-dim);
-  padding: 1px 5px;
-}
-
-.tag-good {
-  color: var(--good);
-  border-color: #4d5f41;
-}
-
-.figs {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--muted);
-  margin-left: auto;
-}
-
-.hints .hint {
-  margin: 4px 0 0;
+  }
 }
 
 /* ---------- 모바일 다듬기 ---------- */
@@ -1280,6 +1197,5 @@ input {
   }
   .practice-side {
     order: 2;
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
   }
 }

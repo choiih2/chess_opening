@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Chess } from "chess.js";
 import { Chessboard } from "react-chessboard";
 import {
@@ -22,19 +22,13 @@ import {
 } from "./lib/repertoire";
 import { toKorean } from "./lib/i18n";
 import { hasLichessToken } from "./lib/env";
-<<<<<<< HEAD
 import { loadFavorites, saveFavorites, toggleFavorite } from "./lib/favorites";
+import { useBoardWidth } from "./lib/useBoardWidth";
 import OpeningTree from "./components/OpeningTree";
 import OpeningPanel from "./components/OpeningPanel";
 import PracticeMode from "./components/PracticeMode";
 import ModeSelect from "./components/ModeSelect";
 import GameReview from "./components/GameReview";
-=======
-import { useBoardWidth } from "./lib/useBoardWidth";
-import OpeningTree from "./components/OpeningTree";
-import OpeningPanel from "./components/OpeningPanel";
-import PracticeMode from "./components/PracticeMode";
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 
 const RATING_BANDS = [
   { label: "1000 – 1400", value: [1000, 1200] },
@@ -66,24 +60,16 @@ export default function App() {
   const [statsError, setStatsError] = useState<string | null>(null);
   const [loadingStats, setLoadingStats] = useState(false);
   const [practice, setPractice] = useState<"w" | "b" | null>(null);
-<<<<<<< HEAD
   const [mode, setMode] = useState<"study" | "practice" | "review" | null>(null);
   const [repertoire, setRepertoire] = useState<Repertoire>({});
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [band, setBand] = useState(2);
   const [viewPly, setViewPly] = useState(0); // 보드에 몇 수까지 보여줄지 (학습용 되감기)
-=======
-  const [repertoire, setRepertoire] = useState<Repertoire>({});
-  const [band, setBand] = useState(2);
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
   // 국면(노드 id) -> { SAN: 대국 수 }. 트리를 실전 빈도순으로 놓는 데 쓴다.
   const [moveCounts, setMoveCounts] = useState<
     Map<string, Record<string, number>>
   >(new Map());
-<<<<<<< HEAD
-=======
   const board = useBoardWidth(440);
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 
   const explorerOptions: ExplorerOptions = useMemo(
     () => ({ ratings: RATING_BANDS[band].value, speeds: DEFAULT_OPTIONS.speeds }),
@@ -96,7 +82,6 @@ export default function App() {
       setRows(m.default as OpeningRow[])
     );
     loadRepertoire().then(setRepertoire);
-<<<<<<< HEAD
     loadFavorites().then(setFavorites);
   }, []);
 
@@ -108,10 +93,36 @@ export default function App() {
     });
   }
 
-=======
+  // 화면 "깊이"를 히스토리 항목에 실어 둔다. 이게 없으면 뒤로가기(브라우저나
+  // 안드로이드 제스처)가 앱 내부 화면을 되짚는 대신 곧바로 사이트를 벗어나 버린다.
+  // 0 = 모드 선택, 1 = 모드 선택 후 화면(학습/복기/연습 설정), 2 = 연습 진행 중.
+  const skipNextPush = useRef(false);
+
+  useEffect(() => {
+    if (!history.state || typeof history.state.depth !== "number") {
+      history.replaceState({ depth: 0 }, "");
+    }
+    const onPopState = (e: PopStateEvent) => {
+      const depth = (e.state as { depth?: number } | null)?.depth ?? 0;
+      skipNextPush.current = true;
+      if (depth < 2) setPractice(null);
+      if (depth < 1) setMode(null);
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
+  useEffect(() => {
+    if (skipNextPush.current) {
+      skipNextPush.current = false;
+      return;
+    }
+    const depth = practice ? 2 : mode ? 1 : 0;
+    if ((history.state as { depth?: number } | null)?.depth !== depth) {
+      history.pushState({ depth }, "");
+    }
+  }, [mode, practice]);
+
   const { roots, byId } = useMemo(() => {
     if (!rows) return { roots: [] as OpeningNode[], byId: new Map() };
     const r = buildTree(rows);
@@ -175,10 +186,7 @@ export default function App() {
 
   function select(node: OpeningNode) {
     setSelected(node);
-<<<<<<< HEAD
     setViewPly(node.moves.length); // 새로 고르면 일단 마지막 수까지 보여준다
-=======
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
     // 선택한 노드까지의 조상을 모두 펼친다.
     setExpanded((prev) => {
       const next = new Set(prev);
@@ -219,7 +227,6 @@ export default function App() {
     );
   }
 
-<<<<<<< HEAD
   if (!mode) {
     return <ModeSelect onSelect={setMode} />;
   }
@@ -228,8 +235,6 @@ export default function App() {
     return <GameReview byId={byId} onHome={() => setMode(null)} />;
   }
 
-=======
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
   if (practice && selected) {
     return (
       <PracticeMode
@@ -252,17 +257,12 @@ export default function App() {
         selectedId={selected?.id ?? null}
         expanded={expanded}
         moveCounts={moveCounts}
-<<<<<<< HEAD
         mode={mode}
         favorites={favorites}
         onToggle={toggle}
         onSelect={select}
         onToggleFavorite={toggleFav}
         onHome={() => setMode(null)}
-=======
-        onToggle={toggle}
-        onSelect={select}
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
       />
 
       <main className="main">
@@ -284,16 +284,10 @@ export default function App() {
         {selected && position ? (
           <div className="split">
             <div className="board-col">
-<<<<<<< HEAD
-              <div className="board-frame">
-                <Chessboard
-                  position={viewPly < selected.moves.length ? position.fens[viewPly] : position.fen}
-=======
               <div className="board-frame" ref={board.ref}>
                 <Chessboard
-                  position={position.fen}
+                  position={viewPly < selected.moves.length ? position.fens[viewPly] : position.fen}
                   boardWidth={board.width}
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
                   arePiecesDraggable={false}
                   customBoardStyle={{ borderRadius: 0 }}
                   customDarkSquareStyle={{ backgroundColor: "#4E5B4C" }}
@@ -301,7 +295,6 @@ export default function App() {
                   animationDuration={180}
                 />
               </div>
-<<<<<<< HEAD
 
               <div className="actions">
                 <button className="btn" onClick={() => setViewPly(0)} disabled={viewPly === 0}>
@@ -330,8 +323,6 @@ export default function App() {
                 </button>
               </div>
 
-=======
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
               <div className="field">
                 <label className="eyebrow" htmlFor="band">
                   통계 기준 레이팅
@@ -358,7 +349,6 @@ export default function App() {
               loading={loadingStats}
               sideToMove={position.turn}
               childCounts={moveCounts.get(selected.id)}
-<<<<<<< HEAD
               mode={mode}
               favorites={favorites}
               onSelect={select}
@@ -366,11 +356,6 @@ export default function App() {
               onAddToRepertoire={addLine}
               onSwitchToPractice={() => setMode("practice")}
               onToggleFavorite={toggleFav}
-=======
-              onSelect={select}
-              onPractice={setPractice}
-              onAddToRepertoire={addLine}
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
             />
           </div>
         ) : (

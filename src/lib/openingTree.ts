@@ -94,7 +94,6 @@ export function indexById(roots: OpeningNode[]): Map<string, OpeningNode> {
   return map;
 }
 
-<<<<<<< HEAD
 /**
  * 실전 기보(수순)가 우리 트리의 어느 오프닝에 해당하는지 찾는다.
  * 한 수씩 따라가며 등재된 가장 깊은 지점까지의 노드를 돌려준다.
@@ -111,8 +110,6 @@ export function identifyOpening(
   return found;
 }
 
-=======
->>>>>>> 1c4ad35ce796730ee570be28e85def78e24e8f26
 /** 루트부터 해당 노드까지의 조상 경로 (브레드크럼용) */
 export function ancestorsOf(
   node: OpeningNode,
