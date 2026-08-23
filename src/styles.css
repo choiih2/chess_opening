@@ -433,6 +433,43 @@ input {
   margin-top: 6px;
 }
 
+.winbar-wrap.is-vertical {
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+.winbar.is-vertical {
+  flex-direction: column-reverse;
+  width: 14px;
+  height: 100%;
+}
+
+.winbar-labels.is-vertical {
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 0;
+  margin-left: 6px;
+}
+
+.board-with-winbar {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.board-with-winbar .board-frame {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.side-winbar {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 10px 6px;
+}
+
 /* ---------- 수 목록 표 ---------- */
 
 .moves {

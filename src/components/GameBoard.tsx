@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Chess, type Square } from "chess.js";
 import { Chessboard } from "react-chessboard";
 import { ChesscomGame, myColor, myResult, timeClassLabel } from "../lib/chesscom";
 import { OpeningNode, identifyOpening } from "../lib/openingTree";
 import { toKorean } from "../lib/i18n";
+import { DEFAULT_OPTIONS, ExplorerResult, fetchExplorer } from "../lib/explorer";
 import {
   DEFAULT_MAX_PLIES,
   PlyReview,
@@ -13,6 +14,7 @@ import {
   reviewGame,
 } from "../lib/gameAnalysis";
 import { arrowSquares, sanForUci } from "../lib/uci";
+import WinBar from "./WinBar";
 
 const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
@@ -60,12 +62,28 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
   const [analyzing, setAnalyzing] = useState(false);
   const [progress, setProgress] = useState<ReviewProgress | null>(null);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [winStats, setWinStats] = useState<ExplorerResult | null>(null);
 
   const total = parsed.moves.length;
   const boardFen =
     viewIndex === 0 ? parsed.moves[0]?.before ?? START_FEN : parsed.moves[viewIndex - 1].after;
   const upcoming = viewIndex < total ? parsed.moves[viewIndex] : null;
   const review = analysis?.[viewIndex] ?? null;
+
+  // 지금 보고 있는 국면의 실전 승/무/패를 보드 옆 막대에 보여준다.
+  useEffect(() => {
+    let alive = true;
+    setWinStats(null);
+    const timer = setTimeout(() => {
+      fetchExplorer(boardFen, DEFAULT_OPTIONS)
+        .then((r) => alive && setWinStats(r))
+        .catch(() => alive && setWinStats(null));
+    }, 250);
+    return () => {
+      alive = false;
+      clearTimeout(timer);
+    };
+  }, [boardFen]);
 
   async function analyzeGame() {
     setAnalyzing(true);
@@ -124,17 +142,30 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
 
       <div className="split">
         <div className="board-col">
-          <div className="board-frame">
-            <Chessboard
-              position={boardFen}
-              arePiecesDraggable={false}
-              boardOrientation={side === "b" ? "black" : "white"}
-              customArrows={arrows}
-              customBoardStyle={{ borderRadius: 0 }}
-              customDarkSquareStyle={{ backgroundColor: "#4E5B4C" }}
-              customLightSquareStyle={{ backgroundColor: "#D7CFB8" }}
-              animationDuration={180}
-            />
+          <div className="board-with-winbar">
+            <div className="board-frame">
+              <Chessboard
+                // 국면이 바뀔 때마다 완전히 새로 그려서, 이전 국면의 화살표가
+                // react-chessboard 내부 상태에 남아 다음 국면까지 따라오지 않게 한다.
+                key={viewIndex}
+                position={boardFen}
+                arePiecesDraggable={false}
+                boardOrientation={side === "b" ? "black" : "white"}
+                customArrows={arrows}
+                customBoardStyle={{ borderRadius: 0 }}
+                customDarkSquareStyle={{ backgroundColor: "#4E5B4C" }}
+                customLightSquareStyle={{ backgroundColor: "#D7CFB8" }}
+                animationDuration={180}
+              />
+            </div>
+            <div className="side-winbar" title="이 국면의 실전 백/무/흑 비율">
+              <WinBar
+                white={winStats?.white ?? 0}
+                draws={winStats?.draws ?? 0}
+                black={winStats?.black ?? 0}
+                vertical
+              />
+            </div>
           </div>
 
           <div className="actions">

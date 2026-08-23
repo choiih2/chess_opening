@@ -2,6 +2,8 @@ node_modules
 dist
 .env
 src/data/openings.json
+src/data/.candidates.json
+src/data/.frequency-cache.json
 
 .vercel
 .env*

@@ -38,7 +38,9 @@ interface GamesResponse {
 }
 
 async function getJson<T>(url: string): Promise<T> {
-  const res = await fetch(url);
+  // 브라우저 HTTP 캐시를 끈다. 이번 달 대국 목록처럼 계속 바뀌는 응답을 앱 쪽
+  // IndexedDB 캐시 로직과 무관하게 브라우저가 조용히 옛 응답으로 되돌려 주는 걸 막는다.
+  const res = await fetch(url, { cache: "no-store" });
   if (res.status === 404) {
     throw new Error("이 아이디를 찾을 수 없습니다. 철자를 확인하세요.");
   }

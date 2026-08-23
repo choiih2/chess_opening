@@ -1,0 +1,1668 @@
+[
+  {
+    "eco": "B00",
+    "name": "King's Pawn Game",
+    "moves": [
+      "e4"
+    ],
+    "games": 2871226700
+  },
+  {
+    "eco": "C20",
+    "name": "King's Pawn Game",
+    "moves": [
+      "e4",
+      "e5"
+    ],
+    "games": 1262718566
+  },
+  {
+    "eco": "A40",
+    "name": "Queen's Pawn Game",
+    "moves": [
+      "d4"
+    ],
+    "games": 1147958706
+  },
+  {
+    "eco": "C40",
+    "name": "King's Knight Opening",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3"
+    ],
+    "games": 794145123
+  },
+  {
+    "eco": "B20",
+    "name": "Sicilian Defense",
+    "moves": [
+      "e4",
+      "c5"
+    ],
+    "games": 525948874
+  },
+  {
+    "eco": "D00",
+    "name": "Queen's Pawn Game",
+    "moves": [
+      "d4",
+      "d5"
+    ],
+    "games": 516180869
+  },
+  {
+    "eco": "C44",
+    "name": "King's Knight Opening: Normal Variation",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6"
+    ],
+    "games": 516081280
+  },
+  {
+    "eco": "B27",
+    "name": "Sicilian Defense",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3"
+    ],
+    "games": 286253072
+  },
+  {
+    "eco": "C00",
+    "name": "French Defense",
+    "moves": [
+      "e4",
+      "e6"
+    ],
+    "games": 277198335
+  },
+  {
+    "eco": "B01",
+    "name": "Scandinavian Defense",
+    "moves": [
+      "e4",
+      "d5"
+    ],
+    "games": 261128255
+  },
+  {
+    "eco": "A45",
+    "name": "Indian Defense",
+    "moves": [
+      "d4",
+      "Nf6"
+    ],
+    "games": 236820679
+  },
+  {
+    "eco": "C50",
+    "name": "Italian Game",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Bc4"
+    ],
+    "games": 231510145
+  },
+  {
+    "eco": "B10",
+    "name": "Caro-Kann Defense",
+    "moves": [
+      "e4",
+      "c6"
+    ],
+    "games": 200747979
+  },
+  {
+    "eco": "D06",
+    "name": "Queen's Gambit",
+    "moves": [
+      "d4",
+      "d5",
+      "c4"
+    ],
+    "games": 198003940
+  },
+  {
+    "eco": "A10",
+    "name": "English Opening",
+    "moves": [
+      "c4"
+    ],
+    "games": 148173663
+  },
+  {
+    "eco": "C00",
+    "name": "French Defense: Normal Variation",
+    "moves": [
+      "e4",
+      "e6",
+      "d4"
+    ],
+    "games": 145297987
+  },
+  {
+    "eco": "A04",
+    "name": "Zukertort Opening",
+    "moves": [
+      "Nf3"
+    ],
+    "games": 141437882
+  },
+  {
+    "eco": "C23",
+    "name": "Bishop's Opening",
+    "moves": [
+      "e4",
+      "e5",
+      "Bc4"
+    ],
+    "games": 136416741
+  },
+  {
+    "eco": "B01",
+    "name": "Scandinavian Defense: Mieses-Kotroc Variation",
+    "moves": [
+      "e4",
+      "d5",
+      "exd5",
+      "Qxd5"
+    ],
+    "games": 127638419
+  },
+  {
+    "eco": "C41",
+    "name": "Philidor Defense",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "d6"
+    ],
+    "games": 122546753
+  },
+  {
+    "eco": "B30",
+    "name": "Sicilian Defense: Old Sicilian",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3",
+      "Nc6"
+    ],
+    "games": 121627154
+  },
+  {
+    "eco": "C60",
+    "name": "Ruy Lopez",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Bb5"
+    ],
+    "games": 119322253
+  },
+  {
+    "eco": "A40",
+    "name": "Horwitz Defense",
+    "moves": [
+      "d4",
+      "e6"
+    ],
+    "games": 106780023
+  },
+  {
+    "eco": "D02",
+    "name": "Queen's Pawn Game: Zukertort Variation",
+    "moves": [
+      "d4",
+      "d5",
+      "Nf3"
+    ],
+    "games": 104680239
+  },
+  {
+    "eco": "A50",
+    "name": "Indian Defense: Normal Variation",
+    "moves": [
+      "d4",
+      "Nf6",
+      "c4"
+    ],
+    "games": 103339402
+  },
+  {
+    "eco": "C00",
+    "name": "French Defense",
+    "moves": [
+      "e4",
+      "e6",
+      "d4",
+      "d5"
+    ],
+    "games": 101083934
+  },
+  {
+    "eco": "B00",
+    "name": "Pirc Defense",
+    "moves": [
+      "e4",
+      "d6"
+    ],
+    "games": 97389174
+  },
+  {
+    "eco": "B12",
+    "name": "Caro-Kann Defense",
+    "moves": [
+      "e4",
+      "c6",
+      "d4"
+    ],
+    "games": 95954724
+  },
+  {
+    "eco": "B50",
+    "name": "Sicilian Defense: Modern Variations",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3",
+      "d6"
+    ],
+    "games": 92654148
+  },
+  {
+    "eco": "C44",
+    "name": "Scotch Game",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "d4"
+    ],
+    "games": 91063957
+  },
+  {
+    "eco": "B12",
+    "name": "Caro-Kann Defense",
+    "moves": [
+      "e4",
+      "c6",
+      "d4",
+      "d5"
+    ],
+    "games": 89472390
+  },
+  {
+    "eco": "C42",
+    "name": "Petrov's Defense",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nf6"
+    ],
+    "games": 89116566
+  },
+  {
+    "eco": "C55",
+    "name": "Italian Game: Two Knights Defense",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Bc4",
+      "Nf6"
+    ],
+    "games": 80571360
+  },
+  {
+    "eco": "B06",
+    "name": "Modern Defense",
+    "moves": [
+      "e4",
+      "g6"
+    ],
+    "games": 78623401
+  },
+  {
+    "eco": "C30",
+    "name": "King's Gambit",
+    "moves": [
+      "e4",
+      "e5",
+      "f4"
+    ],
+    "games": 77978780
+  },
+  {
+    "eco": "C20",
+    "name": "Center Game",
+    "moves": [
+      "e4",
+      "e5",
+      "d4"
+    ],
+    "games": 77962166
+  },
+  {
+    "eco": "C50",
+    "name": "Italian Game: Giuoco Piano",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Bc4",
+      "Bc5"
+    ],
+    "games": 77289338
+  },
+  {
+    "eco": "A00",
+    "name": "Van't Kruijs Opening",
+    "moves": [
+      "e3"
+    ],
+    "games": 73664653
+  },
+  {
+    "eco": "C44",
+    "name": "Scotch Game",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "d4",
+      "exd4"
+    ],
+    "games": 73156604
+  },
+  {
+    "eco": "C25",
+    "name": "Vienna Game",
+    "moves": [
+      "e4",
+      "e5",
+      "Nc3"
+    ],
+    "games": 72984570
+  },
+  {
+    "eco": "D30",
+    "name": "Queen's Gambit Declined",
+    "moves": [
+      "d4",
+      "d5",
+      "c4",
+      "e6"
+    ],
+    "games": 69852293
+  },
+  {
+    "eco": "C46",
+    "name": "Three Knights Opening",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Nc3"
+    ],
+    "games": 65963389
+  },
+  {
+    "eco": "A40",
+    "name": "Englund Gambit",
+    "moves": [
+      "d4",
+      "e5"
+    ],
+    "games": 62272794
+  },
+  {
+    "eco": "B00",
+    "name": "Pirc Defense",
+    "moves": [
+      "e4",
+      "d6",
+      "d4"
+    ],
+    "games": 54371434
+  },
+  {
+    "eco": "B32",
+    "name": "Sicilian Defense: Open",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3",
+      "Nc6",
+      "d4"
+    ],
+    "games": 54279878
+  },
+  {
+    "eco": "A00",
+    "name": "Hungarian Opening",
+    "moves": [
+      "g3"
+    ],
+    "games": 52793332
+  },
+  {
+    "eco": "B40",
+    "name": "Sicilian Defense: French Variation",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3",
+      "e6"
+    ],
+    "games": 52457519
+  },
+  {
+    "eco": "B32",
+    "name": "Sicilian Defense: Open",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3",
+      "Nc6",
+      "d4",
+      "cxd4"
+    ],
+    "games": 52436808
+  },
+  {
+    "eco": "C47",
+    "name": "Four Knights Game",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Nc3",
+      "Nf6"
+    ],
+    "games": 52192954
+  },
+  {
+    "eco": "C21",
+    "name": "Center Game Accepted",
+    "moves": [
+      "e4",
+      "e5",
+      "d4",
+      "exd4"
+    ],
+    "games": 51385773
+  },
+  {
+    "eco": "D10",
+    "name": "Slav Defense",
+    "moves": [
+      "d4",
+      "d5",
+      "c4",
+      "c6"
+    ],
+    "games": 50901543
+  },
+  {
+    "eco": "A06",
+    "name": "Zukertort Opening",
+    "moves": [
+      "Nf3",
+      "d5"
+    ],
+    "games": 50388010
+  },
+  {
+    "eco": "C45",
+    "name": "Scotch Game",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "d4",
+      "exd4",
+      "Nxd4"
+    ],
+    "games": 49880415
+  },
+  {
+    "eco": "A46",
+    "name": "Indian Defense: Knights Variation",
+    "moves": [
+      "d4",
+      "Nf6",
+      "Nf3"
+    ],
+    "games": 49866725
+  },
+  {
+    "eco": "A20",
+    "name": "English Opening: King's English Variation",
+    "moves": [
+      "c4",
+      "e5"
+    ],
+    "games": 49604602
+  },
+  {
+    "eco": "B50",
+    "name": "Sicilian Defense",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3",
+      "d6",
+      "d4"
+    ],
+    "games": 49130385
+  },
+  {
+    "eco": "B32",
+    "name": "Sicilian Defense: Open",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3",
+      "Nc6",
+      "d4",
+      "cxd4",
+      "Nxd4"
+    ],
+    "games": 49021203
+  },
+  {
+    "eco": "D20",
+    "name": "Queen's Gambit Accepted",
+    "moves": [
+      "d4",
+      "d5",
+      "c4",
+      "dxc4"
+    ],
+    "games": 48876368
+  },
+  {
+    "eco": "A40",
+    "name": "Queen's Pawn Game: Modern Defense",
+    "moves": [
+      "d4",
+      "g6"
+    ],
+    "games": 48698768
+  },
+  {
+    "eco": "C24",
+    "name": "Bishop's Opening: Berlin Defense",
+    "moves": [
+      "e4",
+      "e5",
+      "Bc4",
+      "Nf6"
+    ],
+    "games": 47270374
+  },
+  {
+    "eco": "B50",
+    "name": "Sicilian Defense",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3",
+      "d6",
+      "d4",
+      "cxd4"
+    ],
+    "games": 47212306
+  },
+  {
+    "eco": "A01",
+    "name": "Nimzo-Larsen Attack",
+    "moves": [
+      "b3"
+    ],
+    "games": 46584994
+  },
+  {
+    "eco": "B23",
+    "name": "Sicilian Defense: Closed",
+    "moves": [
+      "e4",
+      "c5",
+      "Nc3"
+    ],
+    "games": 44855107
+  },
+  {
+    "eco": "B02",
+    "name": "Alekhine Defense",
+    "moves": [
+      "e4",
+      "Nf6"
+    ],
+    "games": 43954098
+  },
+  {
+    "eco": "C02",
+    "name": "French Defense: Advance Variation",
+    "moves": [
+      "e4",
+      "e6",
+      "d4",
+      "d5",
+      "e5"
+    ],
+    "games": 43921812
+  },
+  {
+    "eco": "B00",
+    "name": "Nimzowitsch Defense",
+    "moves": [
+      "e4",
+      "Nc6"
+    ],
+    "games": 42652128
+  },
+  {
+    "eco": "D02",
+    "name": "Queen's Pawn Game: Symmetrical Variation",
+    "moves": [
+      "d4",
+      "d5",
+      "Nf3",
+      "Nf6"
+    ],
+    "games": 42322803
+  },
+  {
+    "eco": "B21",
+    "name": "Sicilian Defense: Smith-Morra Gambit",
+    "moves": [
+      "e4",
+      "c5",
+      "d4"
+    ],
+    "games": 42106711
+  },
+  {
+    "eco": "D31",
+    "name": "Queen's Gambit Declined: Queen's Knight Variation",
+    "moves": [
+      "d4",
+      "d5",
+      "c4",
+      "e6",
+      "Nc3"
+    ],
+    "games": 41010538
+  },
+  {
+    "eco": "A02",
+    "name": "Bird Opening",
+    "moves": [
+      "f4"
+    ],
+    "games": 40384977
+  },
+  {
+    "eco": "A43",
+    "name": "Benoni Defense: Old Benoni",
+    "moves": [
+      "d4",
+      "c5"
+    ],
+    "games": 39204371
+  },
+  {
+    "eco": "B06",
+    "name": "Modern Defense",
+    "moves": [
+      "e4",
+      "g6",
+      "d4",
+      "Bg7"
+    ],
+    "games": 38900046
+  },
+  {
+    "eco": "D00",
+    "name": "Queen's Pawn Game: Chigorin Variation",
+    "moves": [
+      "d4",
+      "d5",
+      "Nc3"
+    ],
+    "games": 38361283
+  },
+  {
+    "eco": "A41",
+    "name": "Queen's Pawn Game",
+    "moves": [
+      "d4",
+      "d6"
+    ],
+    "games": 38299505
+  },
+  {
+    "eco": "B12",
+    "name": "Caro-Kann Defense: Advance Variation",
+    "moves": [
+      "e4",
+      "c6",
+      "d4",
+      "d5",
+      "e5"
+    ],
+    "games": 38207854
+  },
+  {
+    "eco": "B01",
+    "name": "Scandinavian Defense: Modern Variation",
+    "moves": [
+      "e4",
+      "d5",
+      "exd5",
+      "Nf6"
+    ],
+    "games": 38105729
+  },
+  {
+    "eco": "C41",
+    "name": "Philidor Defense",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "d6",
+      "d4"
+    ],
+    "games": 37985269
+  },
+  {
+    "eco": "D35",
+    "name": "Queen's Gambit Declined: Normal Defense",
+    "moves": [
+      "d4",
+      "d5",
+      "c4",
+      "e6",
+      "Nc3",
+      "Nf6"
+    ],
+    "games": 37721873
+  },
+  {
+    "eco": "C33",
+    "name": "King's Gambit Accepted",
+    "moves": [
+      "e4",
+      "e5",
+      "f4",
+      "exf4"
+    ],
+    "games": 34871798
+  },
+  {
+    "eco": "C02",
+    "name": "French Defense: Advance Variation",
+    "moves": [
+      "e4",
+      "e6",
+      "d4",
+      "d5",
+      "e5",
+      "c5"
+    ],
+    "games": 34692932
+  },
+  {
+    "eco": "E60",
+    "name": "Indian Defense: West Indian Defense",
+    "moves": [
+      "d4",
+      "Nf6",
+      "c4",
+      "g6"
+    ],
+    "games": 32444596
+  },
+  {
+    "eco": "B54",
+    "name": "Sicilian Defense: Modern Variations, Main Line",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3",
+      "d6",
+      "d4",
+      "cxd4",
+      "Nxd4",
+      "Nf6"
+    ],
+    "games": 32158600
+  },
+  {
+    "eco": "C70",
+    "name": "Ruy Lopez: Morphy Defense",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Bb5",
+      "a6"
+    ],
+    "games": 31228919
+  },
+  {
+    "eco": "C34",
+    "name": "King's Gambit Accepted: King's Knight's Gambit",
+    "moves": [
+      "e4",
+      "e5",
+      "f4",
+      "exf4",
+      "Nf3"
+    ],
+    "games": 30872043
+  },
+  {
+    "eco": "B01",
+    "name": "Scandinavian Defense: Main Line",
+    "moves": [
+      "e4",
+      "d5",
+      "exd5",
+      "Qxd5",
+      "Nc3",
+      "Qa5"
+    ],
+    "games": 29912561
+  },
+  {
+    "eco": "A21",
+    "name": "English Opening: King's English Variation, Reversed Sicilian",
+    "moves": [
+      "c4",
+      "e5",
+      "Nc3"
+    ],
+    "games": 29829166
+  },
+  {
+    "eco": "C42",
+    "name": "Petrov's Defense",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nf6",
+      "Nxe5"
+    ],
+    "games": 29180685
+  },
+  {
+    "eco": "B22",
+    "name": "Sicilian Defense: Alapin Variation",
+    "moves": [
+      "e4",
+      "c5",
+      "c3"
+    ],
+    "games": 28513920
+  },
+  {
+    "eco": "B00",
+    "name": "Pirc Defense",
+    "moves": [
+      "e4",
+      "d6",
+      "d4",
+      "Nf6"
+    ],
+    "games": 27831558
+  },
+  {
+    "eco": "C26",
+    "name": "Vienna Game: Falkbeer Variation",
+    "moves": [
+      "e4",
+      "e5",
+      "Nc3",
+      "Nf6"
+    ],
+    "games": 27434236
+  },
+  {
+    "eco": "C25",
+    "name": "Vienna Game: Max Lange Defense",
+    "moves": [
+      "e4",
+      "e5",
+      "Nc3",
+      "Nc6"
+    ],
+    "games": 27386909
+  },
+  {
+    "eco": "D10",
+    "name": "Slav Defense",
+    "moves": [
+      "d4",
+      "d5",
+      "c4",
+      "c6",
+      "Nc3"
+    ],
+    "games": 27280670
+  },
+  {
+    "eco": "E61",
+    "name": "King's Indian Defense",
+    "moves": [
+      "d4",
+      "Nf6",
+      "c4",
+      "g6",
+      "Nc3"
+    ],
+    "games": 26240139
+  },
+  {
+    "eco": "B13",
+    "name": "Caro-Kann Defense: Exchange Variation",
+    "moves": [
+      "e4",
+      "c6",
+      "d4",
+      "d5",
+      "exd5",
+      "cxd5"
+    ],
+    "games": 26164043
+  },
+  {
+    "eco": "C57",
+    "name": "Italian Game: Two Knights Defense, Knight Attack",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Bc4",
+      "Nf6",
+      "Ng5"
+    ],
+    "games": 26019699
+  },
+  {
+    "eco": "B13",
+    "name": "Caro-Kann Defense: Exchange Variation",
+    "moves": [
+      "e4",
+      "c6",
+      "d4",
+      "d5",
+      "exd5"
+    ],
+    "games": 25970137
+  },
+  {
+    "eco": "A15",
+    "name": "English Opening: Anglo-Indian Defense",
+    "moves": [
+      "c4",
+      "Nf6"
+    ],
+    "games": 25470219
+  },
+  {
+    "eco": "C10",
+    "name": "French Defense: Paulsen Variation",
+    "moves": [
+      "e4",
+      "e6",
+      "d4",
+      "d5",
+      "Nc3"
+    ],
+    "games": 24596796
+  },
+  {
+    "eco": "B40",
+    "name": "Sicilian Defense: French Variation, Open",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3",
+      "e6",
+      "d4",
+      "cxd4"
+    ],
+    "games": 24148800
+  },
+  {
+    "eco": "C02",
+    "name": "French Defense: Advance Variation",
+    "moves": [
+      "e4",
+      "e6",
+      "d4",
+      "d5",
+      "e5",
+      "c5",
+      "c3"
+    ],
+    "games": 23606564
+  },
+  {
+    "eco": "A45",
+    "name": "Queen's Pawn Game: Chigorin Variation",
+    "moves": [
+      "d4",
+      "Nf6",
+      "Nc3",
+      "d5"
+    ],
+    "games": 23450009
+  },
+  {
+    "eco": "A00",
+    "name": "Mieses Opening",
+    "moves": [
+      "d3"
+    ],
+    "games": 23405765
+  },
+  {
+    "eco": "C65",
+    "name": "Ruy Lopez: Berlin Defense",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Bb5",
+      "Nf6"
+    ],
+    "games": 22642652
+  },
+  {
+    "eco": "A05",
+    "name": "Zukertort Opening",
+    "moves": [
+      "Nf3",
+      "Nf6"
+    ],
+    "games": 22576338
+  },
+  {
+    "eco": "A80",
+    "name": "Dutch Defense",
+    "moves": [
+      "d4",
+      "f5"
+    ],
+    "games": 22528724
+  },
+  {
+    "eco": "C53",
+    "name": "Italian Game: Classical Variation",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Bc4",
+      "Bc5",
+      "c3"
+    ],
+    "games": 21891615
+  },
+  {
+    "eco": "C21",
+    "name": "Center Game",
+    "moves": [
+      "e4",
+      "e5",
+      "d4",
+      "exd4",
+      "Qxd4"
+    ],
+    "games": 21587484
+  },
+  {
+    "eco": "B15",
+    "name": "Caro-Kann Defense",
+    "moves": [
+      "e4",
+      "c6",
+      "d4",
+      "d5",
+      "Nc3"
+    ],
+    "games": 20814129
+  },
+  {
+    "eco": "C41",
+    "name": "Philidor Defense: Exchange Variation",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "d6",
+      "d4",
+      "exd4"
+    ],
+    "games": 20182161
+  },
+  {
+    "eco": "C57",
+    "name": "Italian Game: Two Knights Defense, Knight Attack, Normal Variation",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Bc4",
+      "Nf6",
+      "Ng5",
+      "d5"
+    ],
+    "games": 19903057
+  },
+  {
+    "eco": "B23",
+    "name": "Sicilian Defense: Closed, Traditional",
+    "moves": [
+      "e4",
+      "c5",
+      "Nc3",
+      "Nc6"
+    ],
+    "games": 19790628
+  },
+  {
+    "eco": "A00",
+    "name": "Polish Opening",
+    "moves": [
+      "b4"
+    ],
+    "games": 19528171
+  },
+  {
+    "eco": "B90",
+    "name": "Sicilian Defense: Najdorf Variation",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3",
+      "d6",
+      "d4",
+      "cxd4",
+      "Nxd4",
+      "Nf6",
+      "Nc3",
+      "a6"
+    ],
+    "games": 19323858
+  },
+  {
+    "eco": "A00",
+    "name": "Van Geet Opening",
+    "moves": [
+      "Nc3"
+    ],
+    "games": 19177344
+  },
+  {
+    "eco": "A06",
+    "name": "Zukertort Opening: Tennison Gambit",
+    "moves": [
+      "e4",
+      "d5",
+      "Nf3"
+    ],
+    "games": 19170511
+  },
+  {
+    "eco": "D37",
+    "name": "Queen's Gambit Declined: Three Knights Variation",
+    "moves": [
+      "d4",
+      "Nf6",
+      "c4",
+      "e6",
+      "Nf3",
+      "d5",
+      "Nc3"
+    ],
+    "games": 19140497
+  },
+  {
+    "eco": "B00",
+    "name": "Nimzowitsch Defense: Declined Variation",
+    "moves": [
+      "e4",
+      "Nc6",
+      "Nf3"
+    ],
+    "games": 19122380
+  },
+  {
+    "eco": "C44",
+    "name": "Ponziani Opening",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "c3"
+    ],
+    "games": 18819982
+  },
+  {
+    "eco": "B02",
+    "name": "Alekhine Defense: Normal Variation",
+    "moves": [
+      "e4",
+      "Nf6",
+      "e5",
+      "Nd5"
+    ],
+    "games": 18523710
+  },
+  {
+    "eco": "C21",
+    "name": "Danish Gambit",
+    "moves": [
+      "e4",
+      "e5",
+      "d4",
+      "exd4",
+      "c3"
+    ],
+    "games": 18382516
+  },
+  {
+    "eco": "D00",
+    "name": "Blackmar-Diemer Gambit",
+    "moves": [
+      "d4",
+      "d5",
+      "e4"
+    ],
+    "games": 18212459
+  },
+  {
+    "eco": "B15",
+    "name": "Caro-Kann Defense: Main Line",
+    "moves": [
+      "e4",
+      "c6",
+      "d4",
+      "d5",
+      "Nd2",
+      "dxe4",
+      "Nxe4"
+    ],
+    "games": 17086323
+  },
+  {
+    "eco": "B21",
+    "name": "Sicilian Defense: Smith-Morra Gambit",
+    "moves": [
+      "e4",
+      "c5",
+      "d4",
+      "cxd4",
+      "c3"
+    ],
+    "games": 17058126
+  },
+  {
+    "eco": "C23",
+    "name": "Bishop's Opening: Boi Variation",
+    "moves": [
+      "e4",
+      "e5",
+      "Bc4",
+      "Bc5"
+    ],
+    "games": 16701841
+  },
+  {
+    "eco": "A30",
+    "name": "English Opening: Symmetrical Variation",
+    "moves": [
+      "c4",
+      "c5"
+    ],
+    "games": 16664927
+  },
+  {
+    "eco": "A48",
+    "name": "East Indian Defense",
+    "moves": [
+      "d4",
+      "Nf6",
+      "Nf3",
+      "g6"
+    ],
+    "games": 16563727
+  },
+  {
+    "eco": "B30",
+    "name": "Sicilian Defense: Nyezhmetdinov-Rossolimo Attack",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3",
+      "Nc6",
+      "Bb5"
+    ],
+    "games": 16545488
+  },
+  {
+    "eco": "C44",
+    "name": "Scotch Game: Scotch Gambit",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "d4",
+      "exd4",
+      "Bc4"
+    ],
+    "games": 16152080
+  },
+  {
+    "eco": "E70",
+    "name": "King's Indian Defense: Normal Variation",
+    "moves": [
+      "d4",
+      "Nf6",
+      "c4",
+      "g6",
+      "Nc3",
+      "Bg7",
+      "e4",
+      "d6"
+    ],
+    "games": 15798708
+  },
+  {
+    "eco": "C02",
+    "name": "French Defense: Advance Variation",
+    "moves": [
+      "e4",
+      "e6",
+      "d4",
+      "d5",
+      "e5",
+      "c5",
+      "c3",
+      "Nc6"
+    ],
+    "games": 15780214
+  },
+  {
+    "eco": "B15",
+    "name": "Caro-Kann Defense",
+    "moves": [
+      "e4",
+      "c6",
+      "d4",
+      "d5",
+      "Nc3",
+      "dxe4"
+    ],
+    "games": 15763600
+  },
+  {
+    "eco": "A03",
+    "name": "Bird Opening: Dutch Variation",
+    "moves": [
+      "f4",
+      "d5"
+    ],
+    "games": 15431151
+  },
+  {
+    "eco": "C48",
+    "name": "Four Knights Game: Spanish Variation",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Nc3",
+      "Nf6",
+      "Bb5"
+    ],
+    "games": 15356349
+  },
+  {
+    "eco": "A16",
+    "name": "English Opening: Anglo-Indian Defense, Queen's Knight Variation",
+    "moves": [
+      "c4",
+      "Nf6",
+      "Nc3"
+    ],
+    "games": 15087227
+  },
+  {
+    "eco": "A13",
+    "name": "English Opening: Agincourt Defense",
+    "moves": [
+      "c4",
+      "e6"
+    ],
+    "games": 15012285
+  },
+  {
+    "eco": "C02",
+    "name": "French Defense: Advance Variation, Paulsen Attack",
+    "moves": [
+      "e4",
+      "e6",
+      "d4",
+      "d5",
+      "e5",
+      "c5",
+      "c3",
+      "Nc6",
+      "Nf3"
+    ],
+    "games": 14905129
+  },
+  {
+    "eco": "B07",
+    "name": "Pirc Defense",
+    "moves": [
+      "e4",
+      "d6",
+      "d4",
+      "Nf6",
+      "Nc3",
+      "g6"
+    ],
+    "games": 14569090
+  },
+  {
+    "eco": "B00",
+    "name": "Nimzowitsch Defense: Kennedy Variation",
+    "moves": [
+      "e4",
+      "Nc6",
+      "d4",
+      "e5"
+    ],
+    "games": 14272464
+  },
+  {
+    "eco": "D04",
+    "name": "Queen's Pawn Game: Colle System",
+    "moves": [
+      "d4",
+      "d5",
+      "Nf3",
+      "Nf6",
+      "e3"
+    ],
+    "games": 14230599
+  },
+  {
+    "eco": "C64",
+    "name": "Ruy Lopez: Classical Variation",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Bb5",
+      "Bc5"
+    ],
+    "games": 13999211
+  },
+  {
+    "eco": "D15",
+    "name": "Slav Defense: Three Knights Variation",
+    "moves": [
+      "d4",
+      "d5",
+      "c4",
+      "c6",
+      "Nf3",
+      "Nf6",
+      "Nc3"
+    ],
+    "games": 13936014
+  },
+  {
+    "eco": "C26",
+    "name": "Vienna Game: Stanley Variation",
+    "moves": [
+      "e4",
+      "e5",
+      "Nc3",
+      "Nf6",
+      "Bc4"
+    ],
+    "games": 13841790
+  },
+  {
+    "eco": "B10",
+    "name": "Caro-Kann Defense",
+    "moves": [
+      "e4",
+      "c6",
+      "Nc3"
+    ],
+    "games": 13829022
+  },
+  {
+    "eco": "E70",
+    "name": "King's Indian Defense: Normal Variation",
+    "moves": [
+      "d4",
+      "Nf6",
+      "c4",
+      "g6",
+      "Nc3",
+      "Bg7",
+      "e4"
+    ],
+    "games": 13616643
+  },
+  {
+    "eco": "C54",
+    "name": "Italian Game: Classical Variation",
+    "moves": [
+      "e4",
+      "e5",
+      "Nf3",
+      "Nc6",
+      "Bc4",
+      "Bc5",
+      "c3",
+      "Nf6"
+    ],
+    "games": 13597519
+  },
+  {
+    "eco": "E20",
+    "name": "Nimzo-Indian Defense",
+    "moves": [
+      "d4",
+      "Nf6",
+      "c4",
+      "e6",
+      "Nc3",
+      "Bb4"
+    ],
+    "games": 13527118
+  },
+  {
+    "eco": "B27",
+    "name": "Sicilian Defense: Hyperaccelerated Dragon",
+    "moves": [
+      "e4",
+      "c5",
+      "Nf3",
+      "g6"
+    ],
+    "games": 13259240
+  },
+  {
+    "eco": "A04",
+    "name": "Zukertort Opening: Sicilian Invitation",
+    "moves": [
+      "Nf3",
+      "c5"
+    ],
+    "games": 13197593
+  },
+  {
+    "eco": "A43",
+    "name": "Benoni Defense: Old Benoni",
+    "moves": [
+      "d4",
+      "c5",
+      "d5"
+    ],
+    "games": 13069273
+  },
+  {
+    "eco": "B00",
+    "name": "Nimzowitsch Defense",
+    "moves": [
+      "e4",
+      "Nc6",
+      "d4"
+    ],
+    "games": 13035471
+  }
+]
