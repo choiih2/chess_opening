@@ -5,8 +5,15 @@ import { Chessboard } from "react-chessboard";
 import { OpeningNode } from "../lib/openingTree";
 import { useBoardWidth } from "../lib/useBoardWidth";
 import { toKorean } from "../lib/i18n";
-import { ExplorerOptions, fetchExplorer, total } from "../lib/explorer";
+import {
+  DEFAULT_OPTIONS,
+  ExplorerOptions,
+  ExplorerResult,
+  fetchExplorer,
+  total,
+} from "../lib/explorer";
 import { analyze, findBrilliantMove, initEngine } from "../lib/engine";
+import { classifyMove } from "../lib/gameAnalysis";
 import { arrowSquares, sanForUci } from "../lib/uci";
 import {
   Difficulty,
@@ -20,6 +27,8 @@ import {
   recordWeakness,
   saveRepertoire,
 } from "../lib/repertoire";
+import WinBar from "./WinBar";
+import BoardBadges, { SquareBadge } from "./BoardBadges";
 
 // 정석 통계가 현재 레이팅대에서 바닥나면 한 번 더 넓혀서 물어본다.
 const BROAD_EXPLORER_OPTIONS: ExplorerOptions = {
@@ -83,6 +92,10 @@ export default function PracticeMode({
   // 휴대폰에서는 드래그가 불안정해서 "탭 -> 탭" 으로도 둘 수 있게 한다.
   const [picked, setPicked] = useState<Square | null>(null);
   const board = useBoardWidth();
+  const [winStats, setWinStats] = useState<ExplorerResult | null>(null);
+  // 상대의 블런더(??)나 내 탁월한 수(!!)를 마지막 수 자리에 표시한다.
+  const [moveBadge, setMoveBadge] = useState<SquareBadge | null>(null);
+  const badgeToken = useRef(0);
 
   // 워커를 미리 띄워 둔다. 첫 힌트 요청에서 엔진 파일(약 7MB) 로딩을 기다리지 않도록.
   useEffect(() => {
@@ -97,6 +110,44 @@ export default function PracticeMode({
     setHintError(null);
     setHintLoading(false);
   }, []);
+
+  const clearBadge = useCallback(() => {
+    badgeToken.current++; // 진행 중인 채점이 있었다면 응답이 와도 무시된다.
+    setMoveBadge(null);
+  }, []);
+
+  /** 방금 둔 수를 백그라운드에서 채점해, 상대 블런더는 ??, 내 탁월한 수는 !! 로 표시한다. */
+  const classifyLastMove = useCallback(
+    (beforeFen: string, afterFen: string, playedUci: string, mover: "w" | "b") => {
+      const myToken = ++badgeToken.current;
+      classifyMove(beforeFen, afterFen, playedUci)
+        .then((result) => {
+          if (badgeToken.current !== myToken) return; // 그 사이 다른 수가 진행됐다
+          if (mover !== side && result.tag === "blunder") {
+            setMoveBadge({ square: arrowSquares(playedUci)[1], text: "??" });
+          } else if (mover === side && result.brilliant) {
+            setMoveBadge({ square: arrowSquares(playedUci)[1], text: "!!" });
+          }
+        })
+        .catch(() => {});
+    },
+    [side]
+  );
+
+  // 지금 국면의 실전 백/무/흑 비율을 보드 옆 막대에 보여준다.
+  useEffect(() => {
+    if (!fen) return;
+    let alive = true;
+    const timer = setTimeout(() => {
+      fetchExplorer(fen, DEFAULT_OPTIONS)
+        .then((r) => alive && setWinStats(r))
+        .catch(() => alive && setWinStats(null));
+    }, 250);
+    return () => {
+      alive = false;
+      clearTimeout(timer);
+    };
+  }, [fen]);
 
   async function showHint() {
     const myToken = ++hintToken.current;
@@ -188,7 +239,8 @@ export default function PracticeMode({
     setUnknownFen(null);
     setPicked(null);
     clearHints();
-  }, [opening, clearHints]);
+    clearBadge();
+  }, [opening, clearHints, clearBadge]);
 
   useEffect(reset, [reset, difficulty]);
 
@@ -205,6 +257,7 @@ export default function PracticeMode({
     setArrows([]);
     setPicked(null);
     clearHints();
+    clearBadge();
     setUnknownFen(null);
     setAttempts((n) => Math.max(0, n - 1));
     setMisses((prev) => {
@@ -236,6 +289,7 @@ export default function PracticeMode({
     }
     const picked = top[idx];
     const before = g.fen();
+    const mover = g.turn();
     const san = sanForUci(before, picked.uci);
     g.move({
       from: picked.uci.slice(0, 2),
@@ -246,6 +300,8 @@ export default function PracticeMode({
     setFeedback(`상대(엔진): ${san} — 정석 범위를 벗어나 엔진이 대신 뒀습니다.`);
     setArrows([]);
     clearHints();
+    clearBadge();
+    classifyLastMove(before, g.fen(), picked.uci, mover);
     setStatus({ kind: "playing" });
   }
 
@@ -275,6 +331,8 @@ export default function PracticeMode({
         if (!isOutOfBook(result)) {
           const picked = pickOpponentMove(result, difficulty, g.turn());
           if (picked) {
+            const before = g.fen();
+            const mover = g.turn();
             g.move(picked.move.san);
             syncBoard(g);
             setFeedback(
@@ -284,6 +342,8 @@ export default function PracticeMode({
             );
             setArrows([]);
             clearHints();
+            clearBadge();
+            classifyLastMove(before, g.fen(), picked.move.uci, mover);
             setStatus({ kind: "playing" });
             return;
           }
@@ -329,6 +389,7 @@ export default function PracticeMode({
     const expected = repertoire[before];
     setAttempts((n) => n + 1);
     clearHints();
+    clearBadge();
 
     if (!expected || expected.length === 0) {
       setUnknownFen({ fen: before, san: played.san });
@@ -337,6 +398,7 @@ export default function PracticeMode({
       );
       setArrows([]);
       syncBoard(g);
+      classifyLastMove(before, g.fen(), played.lan, side);
       return true;
     }
 
@@ -345,6 +407,7 @@ export default function PracticeMode({
       setArrows([]);
       setUnknownFen(null);
       syncBoard(g);
+      classifyLastMove(before, g.fen(), played.lan, side);
       return true;
     }
 
@@ -425,28 +488,45 @@ export default function PracticeMode({
   return (
     <div className="practice">
       <div className="practice-board">
-        <div className="board-frame" ref={board.ref}>
-          {fen && (
-            <Chessboard
-              position={fen}
-              boardWidth={board.width}
-              onPieceDrop={tryMove}
-              onSquareClick={onSquareClick}
-              customSquareStyles={squareStyles}
-              boardOrientation={side === "w" ? "white" : "black"}
-              customArrows={[
-                ...arrows,
-                ...(hints ?? []).map(
-                  (h) => [...arrowSquares(h.uci), h.color] as [Square, Square, string]
-                ),
-              ]}
-              arePiecesDraggable={status.kind === "playing"}
-              customBoardStyle={{ borderRadius: 0 }}
-              customDarkSquareStyle={{ backgroundColor: "#4E5B4C" }}
-              customLightSquareStyle={{ backgroundColor: "#D7CFB8" }}
-              animationDuration={180}
+        <div className="board-with-winbar">
+          <div className="board-frame" ref={board.ref}>
+            {fen && (
+              <Chessboard
+                position={fen}
+                boardWidth={board.width}
+                onPieceDrop={tryMove}
+                onSquareClick={onSquareClick}
+                customSquareStyles={squareStyles}
+                boardOrientation={side === "w" ? "white" : "black"}
+                customArrows={[
+                  ...arrows,
+                  ...(hints ?? []).map(
+                    (h) => [...arrowSquares(h.uci), h.color] as [Square, Square, string]
+                  ),
+                ]}
+                arePiecesDraggable={status.kind === "playing"}
+                customBoardStyle={{ borderRadius: 0 }}
+                customDarkSquareStyle={{ backgroundColor: "#4E5B4C" }}
+                customLightSquareStyle={{ backgroundColor: "#D7CFB8" }}
+                animationDuration={180}
+              />
+            )}
+            <div className="board-badge-layer">
+              <BoardBadges
+                badges={moveBadge ? [moveBadge] : []}
+                boardWidth={board.width}
+                orientation={side === "w" ? "white" : "black"}
+              />
+            </div>
+          </div>
+          <div className="side-winbar" title="이 국면의 실전 백/무/흑 비율">
+            <WinBar
+              white={winStats?.white ?? 0}
+              draws={winStats?.draws ?? 0}
+              black={winStats?.black ?? 0}
+              vertical
             />
-          )}
+          </div>
         </div>
       </div>
 

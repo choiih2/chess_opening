@@ -16,6 +16,8 @@ import {
 import { arrowSquares, sanForUci } from "../lib/uci";
 import { explainAvailable, explainMistake } from "../lib/explain";
 import WinBar from "./WinBar";
+import BoardBadges, { SquareBadge } from "./BoardBadges";
+import { useBoardWidth } from "../lib/useBoardWidth";
 
 const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
@@ -69,6 +71,7 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
   const [exploreFen, setExploreFen] = useState<string | null>(null);
   const [explainText, setExplainText] = useState<string | null>(null);
   const [explainState, setExplainState] = useState<"idle" | "loading" | "failed">("idle");
+  const board = useBoardWidth();
 
   const total = parsed.moves.length;
   const boardFen =
@@ -148,6 +151,14 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
   const traps = useMemo(() => (analysis ?? []).filter((r) => r.trap), [analysis]);
 
   const showAlt = review && (review.tag !== "fine" || review.trap);
+  // 방금 둔 수(현재 국면 직전 수)에 ??/!! 표시를 얹는다.
+  const playedReview = viewIndex > 0 ? analysis?.[viewIndex - 1] ?? null : null;
+  const badges: SquareBadge[] = [];
+  if (playedReview && !exploreFen) {
+    const toSquare = arrowSquares(parsed.moves[viewIndex - 1].lan)[1];
+    if (playedReview.tag === "blunder") badges.push({ square: toSquare, text: "??" });
+    else if (playedReview.brilliant) badges.push({ square: toSquare, text: "!!" });
+  }
   const arrows: [Square, Square, string][] = [];
   if (upcoming) {
     arrows.push([
@@ -189,12 +200,13 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
       <div className="split">
         <div className="board-col">
           <div className="board-with-winbar">
-            <div className="board-frame">
+            <div className="board-frame" ref={board.ref}>
               <Chessboard
                 // 국면이 바뀔 때마다 완전히 새로 그려서, 이전 국면의 화살표가
                 // react-chessboard 내부 상태에 남아 다음 국면까지 따라오지 않게 한다.
                 key={viewIndex}
                 position={displayFen}
+                boardWidth={board.width}
                 onPieceDrop={handleBoardDrop}
                 arePiecesDraggable
                 boardOrientation={side === "b" ? "black" : "white"}
@@ -204,6 +216,13 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
                 customLightSquareStyle={{ backgroundColor: "#D7CFB8" }}
                 animationDuration={180}
               />
+              <div className="board-badge-layer">
+                <BoardBadges
+                  badges={badges}
+                  boardWidth={board.width}
+                  orientation={side === "b" ? "black" : "white"}
+                />
+              </div>
             </div>
             <div className="side-winbar" title="이 국면의 실전 백/무/흑 비율">
               <WinBar

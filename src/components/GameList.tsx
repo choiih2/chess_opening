@@ -58,6 +58,7 @@ export default function GameList({ byId, onPick, onHome }: Props) {
   const [games, setGames] = useState<ChesscomGame[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     loadChesscomUsername().then((u) => setUsername(u));
@@ -68,7 +69,6 @@ export default function GameList({ byId, onPick, onHome }: Props) {
     let alive = true;
     setLoading(true);
     setError(null);
-    setGames([]);
 
     loadRecentGames(username)
       .then((found) => alive && setGames(found))
@@ -78,7 +78,7 @@ export default function GameList({ byId, onPick, onHome }: Props) {
     return () => {
       alive = false;
     };
-  }, [username]);
+  }, [username, refreshKey]);
 
   function submitUsername() {
     const name = input.trim();
@@ -130,9 +130,17 @@ export default function GameList({ byId, onPick, onHome }: Props) {
         </button>
       </div>
       <p className="eyebrow">복기 · {username}</p>
-      <h1>최근 대국 {games.length ? `${games.length}개` : ""}</h1>
+      <div className="review-head">
+        <h1>최근 대국 {games.length ? `${games.length}개` : ""}</h1>
+        <button className="btn" onClick={() => setRefreshKey((k) => k + 1)} disabled={loading}>
+          {loading ? "불러오는 중…" : "새로고침"}
+        </button>
+      </div>
+      <p className="hint">
+        방금 끝낸 대국이 안 보이면 Chess.com 이 기록을 반영할 때까지 잠깐 걸릴 수
+        있습니다. 새로고침을 눌러 다시 확인하세요.
+      </p>
 
-      {loading && <p className="notice">불러오는 중…</p>}
       {error && <p className="notice">{error}</p>}
 
       <ul className="game-list">

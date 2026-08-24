@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Chess } from "chess.js";
+import { Chess, type Square } from "chess.js";
 import { Chessboard } from "react-chessboard";
 import {
   OpeningNode,
@@ -24,11 +24,15 @@ import { toKorean } from "./lib/i18n";
 import { hasLichessToken } from "./lib/env";
 import { loadFavorites, saveFavorites, toggleFavorite } from "./lib/favorites";
 import { useBoardWidth } from "./lib/useBoardWidth";
+import { classifyMove } from "./lib/gameAnalysis";
+import { arrowSquares } from "./lib/uci";
 import OpeningTree from "./components/OpeningTree";
 import OpeningPanel from "./components/OpeningPanel";
 import PracticeMode from "./components/PracticeMode";
 import ModeSelect from "./components/ModeSelect";
 import GameReview from "./components/GameReview";
+import WinBar from "./components/WinBar";
+import BoardBadges, { SquareBadge } from "./components/BoardBadges";
 
 const RATING_BANDS = [
   { label: "1000 – 1400", value: [1000, 1200] },
@@ -69,7 +73,7 @@ export default function App() {
   const [moveCounts, setMoveCounts] = useState<
     Map<string, Record<string, number>>
   >(new Map());
-  const board = useBoardWidth(440);
+  const board = useBoardWidth(520);
 
   const explorerOptions: ExplorerOptions = useMemo(
     () => ({ ratings: RATING_BANDS[band].value, speeds: DEFAULT_OPTIONS.speeds }),
@@ -160,6 +164,82 @@ export default function App() {
       clearTimeout(timer);
     };
   }, [position, explorerOptions]);
+
+  // 지금 보고 있는(되감기 포함) 국면의 fen.
+  const viewFen = useMemo(() => {
+    if (!selected || !position) return null;
+    return viewPly < selected.moves.length ? position.fens[viewPly] : position.fen;
+  }, [selected, position, viewPly]);
+
+  // 항상 보여줄 힌트 화살표(다음 수)와, 방금 둔 수(??/!! 채점용) 를 uci 로 계산한다.
+  const stepMoves = useMemo(() => {
+    let nextUci: string | null = null;
+    let prevUci: string | null = null;
+    if (selected && position) {
+      try {
+        if (viewPly < selected.moves.length) {
+          const g = new Chess(position.fens[viewPly]);
+          nextUci = g.move(selected.moves[viewPly]).lan;
+        }
+      } catch {
+        /* 무시 */
+      }
+      try {
+        if (viewPly > 0) {
+          const g = new Chess(position.fens[viewPly - 1]);
+          prevUci = g.move(selected.moves[viewPly - 1]).lan;
+        }
+      } catch {
+        /* 무시 */
+      }
+    }
+    return { nextUci, prevUci };
+  }, [selected, position, viewPly]);
+
+  // 지금 보고 있는 국면의 실전 백/무/흑 비율을 보드 옆 막대에 보여준다.
+  const [winStats, setWinStats] = useState<ExplorerResult | null>(null);
+  useEffect(() => {
+    if (!viewFen) return;
+    let alive = true;
+    const timer = setTimeout(() => {
+      fetchExplorer(viewFen, DEFAULT_OPTIONS)
+        .then((r) => alive && setWinStats(r))
+        .catch(() => alive && setWinStats(null));
+    }, 250);
+    return () => {
+      alive = false;
+      clearTimeout(timer);
+    };
+  }, [viewFen]);
+
+  // 방금 둔 수가 블런더(??)나 탁월한 수(!!)였는지 채점한다. 같은 국면을 다시
+  // 훑을 때 다시 분석하지 않도록 노드+ply 기준으로 캐싱한다.
+  const badgeCacheRef = useRef(new Map<string, SquareBadge | null>());
+  const badgeToken = useRef(0);
+  const [moveBadge, setMoveBadge] = useState<SquareBadge | null>(null);
+  useEffect(() => {
+    setMoveBadge(null);
+    if (!selected || !position || !stepMoves.prevUci || viewPly === 0) return;
+    const key = `${selected.id}|${viewPly}`;
+    const cached = badgeCacheRef.current.get(key);
+    if (cached !== undefined) {
+      setMoveBadge(cached);
+      return;
+    }
+    const beforeFen = position.fens[viewPly - 1];
+    const afterFen = viewPly < position.fens.length ? position.fens[viewPly] : position.fen;
+    const playedUci = stepMoves.prevUci;
+    const myToken = ++badgeToken.current;
+    classifyMove(beforeFen, afterFen, playedUci)
+      .then((result) => {
+        let badge: SquareBadge | null = null;
+        if (result.tag === "blunder") badge = { square: arrowSquares(playedUci)[1], text: "??" };
+        else if (result.brilliant) badge = { square: arrowSquares(playedUci)[1], text: "!!" };
+        badgeCacheRef.current.set(key, badge);
+        if (badgeToken.current === myToken) setMoveBadge(badge);
+      })
+      .catch(() => {});
+  }, [selected, position, viewPly, stepMoves.prevUci]);
 
   function rememberCounts(id: string, r: ExplorerResult) {
     const rec: Record<string, number> = {};
@@ -284,16 +364,42 @@ export default function App() {
         {selected && position ? (
           <div className="split">
             <div className="board-col">
-              <div className="board-frame" ref={board.ref}>
-                <Chessboard
-                  position={viewPly < selected.moves.length ? position.fens[viewPly] : position.fen}
-                  boardWidth={board.width}
-                  arePiecesDraggable={false}
-                  customBoardStyle={{ borderRadius: 0 }}
-                  customDarkSquareStyle={{ backgroundColor: "#4E5B4C" }}
-                  customLightSquareStyle={{ backgroundColor: "#D7CFB8" }}
-                  animationDuration={180}
-                />
+              <div className="board-with-winbar">
+                <div className="board-frame" ref={board.ref}>
+                  <Chessboard
+                    position={viewFen ?? position.fen}
+                    boardWidth={board.width}
+                    arePiecesDraggable={false}
+                    customArrows={
+                      stepMoves.nextUci
+                        ? [[...arrowSquares(stepMoves.nextUci), "var(--accent)"] as [
+                            Square,
+                            Square,
+                            string
+                          ]]
+                        : []
+                    }
+                    customBoardStyle={{ borderRadius: 0 }}
+                    customDarkSquareStyle={{ backgroundColor: "#4E5B4C" }}
+                    customLightSquareStyle={{ backgroundColor: "#D7CFB8" }}
+                    animationDuration={180}
+                  />
+                  <div className="board-badge-layer">
+                    <BoardBadges
+                      badges={moveBadge ? [moveBadge] : []}
+                      boardWidth={board.width}
+                      orientation="white"
+                    />
+                  </div>
+                </div>
+                <div className="side-winbar" title="이 국면의 실전 백/무/흑 비율">
+                  <WinBar
+                    white={winStats?.white ?? 0}
+                    draws={winStats?.draws ?? 0}
+                    black={winStats?.black ?? 0}
+                    vertical
+                  />
+                </div>
               </div>
 
               <div className="actions">

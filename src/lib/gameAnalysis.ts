@@ -36,6 +36,45 @@ export interface PlyReview {
   /** 이 수를 두기 직전 국면에 뚜렷이 더 좋은 수가 따로 있었는데 놓쳤다면. */
   trap: { uci: string; gapCp: number } | null;
   bestUci: string;
+  /** 둔 수 자체가 다른 후보보다 확실히 튀는 "탁월한 수" 였다면. */
+  brilliant: boolean;
+}
+
+export interface MoveClassification {
+  tag: MoveTag;
+  lossCp: number;
+  brilliant: boolean;
+  bestUci: string;
+}
+
+/**
+ * 한 수만 따로 채점한다 (실시간 연습/학습 화면용). reviewGame 처럼 앞뒤 수를
+ * 이어 붙여 분석을 재사용하지 못하니, 직전/직후 국면을 매번 새로 분석한다.
+ */
+export async function classifyMove(
+  beforeFen: string,
+  afterFen: string,
+  playedUci: string,
+  movetimeMs = DEFAULT_MOVETIME_MS
+): Promise<MoveClassification> {
+  const [before, after] = await Promise.all([
+    analyze(beforeFen, { multiPv: 2, movetimeMs }),
+    analyze(afterFen, { multiPv: 2, movetimeMs }),
+  ]);
+  if (!before.length || !after.length) {
+    return { tag: "fine", lossCp: 0, brilliant: false, bestUci: playedUci };
+  }
+  const lossCp = Math.max(
+    0,
+    Math.round(comparableScore(before[0]) + comparableScore(after[0]))
+  );
+  const brilliant = findBrilliantMove(before);
+  return {
+    tag: classify(lossCp),
+    lossCp,
+    brilliant: brilliant?.line.uci === playedUci,
+    bestUci: before[0].uci,
+  };
 }
 
 export interface ReviewProgress {
@@ -92,6 +131,7 @@ export async function reviewGame(
       tag: classify(lossCp),
       trap,
       bestUci: before[0].uci,
+      brilliant: brilliant?.line.uci === moves[i].lan,
     });
   }
 
