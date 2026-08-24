@@ -14,6 +14,7 @@ import {
   reviewGame,
 } from "../lib/gameAnalysis";
 import { arrowSquares, sanForUci } from "../lib/uci";
+import { explainAvailable, explainMistake } from "../lib/explain";
 import WinBar from "./WinBar";
 
 const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -63,19 +64,64 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
   const [progress, setProgress] = useState<ReviewProgress | null>(null);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [winStats, setWinStats] = useState<ExplorerResult | null>(null);
+  // null 이면 실제 기보를 그대로 보여준다. 보드에서 직접 수를 둬 보면 여기에
+  // 갈라져 나온 국면이 쌓이며 "탐색 중" 상태가 된다.
+  const [exploreFen, setExploreFen] = useState<string | null>(null);
+  const [explainText, setExplainText] = useState<string | null>(null);
+  const [explainState, setExplainState] = useState<"idle" | "loading" | "failed">("idle");
 
   const total = parsed.moves.length;
   const boardFen =
     viewIndex === 0 ? parsed.moves[0]?.before ?? START_FEN : parsed.moves[viewIndex - 1].after;
+  const displayFen = exploreFen ?? boardFen;
   const upcoming = viewIndex < total ? parsed.moves[viewIndex] : null;
   const review = analysis?.[viewIndex] ?? null;
 
-  // 지금 보고 있는 국면의 실전 승/무/패를 보드 옆 막대에 보여준다.
+  // 화살표나 함정 목록을 눌러 실제 기보를 다시 탐색하면 직접 두던 라인은 접는다.
+  useEffect(() => {
+    setExploreFen(null);
+    setExplainText(null);
+    setExplainState("idle");
+  }, [viewIndex]);
+
+  async function showExplanation() {
+    if (!review || review.tag === "fine" || viewIndex === 0) return;
+    setExplainState("loading");
+    setExplainText(null);
+    try {
+      const altUci = review.trap?.uci ?? review.bestUci;
+      const movesSoFar = parsed.moves.slice(0, viewIndex).map((m) => m.san);
+      const text = await explainMistake(
+        movesSoFar,
+        review.san,
+        sanForUci(parsed.moves[viewIndex].before, altUci),
+        review.lossCp,
+        parsed.moves[viewIndex].before
+      );
+      setExplainText(text);
+      setExplainState("idle");
+    } catch {
+      setExplainState("failed");
+    }
+  }
+
+  function handleBoardDrop(from: string, to: string) {
+    const g = new Chess(exploreFen ?? boardFen);
+    try {
+      g.move({ from, to, promotion: "q" });
+    } catch {
+      return false; // 불법 수는 그냥 되돌린다.
+    }
+    setExploreFen(g.fen());
+    return true;
+  }
+
+  // 지금 보고 있는 국면(직접 둬서 갈라져 나온 국면 포함)의 실전 승/무/패를 보드 옆 막대에 보여준다.
   useEffect(() => {
     let alive = true;
     setWinStats(null);
     const timer = setTimeout(() => {
-      fetchExplorer(boardFen, DEFAULT_OPTIONS)
+      fetchExplorer(displayFen, DEFAULT_OPTIONS)
         .then((r) => alive && setWinStats(r))
         .catch(() => alive && setWinStats(null));
     }, 250);
@@ -83,7 +129,7 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
       alive = false;
       clearTimeout(timer);
     };
-  }, [boardFen]);
+  }, [displayFen]);
 
   async function analyzeGame() {
     setAnalyzing(true);
@@ -148,10 +194,11 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
                 // 국면이 바뀔 때마다 완전히 새로 그려서, 이전 국면의 화살표가
                 // react-chessboard 내부 상태에 남아 다음 국면까지 따라오지 않게 한다.
                 key={viewIndex}
-                position={boardFen}
-                arePiecesDraggable={false}
+                position={displayFen}
+                onPieceDrop={handleBoardDrop}
+                arePiecesDraggable
                 boardOrientation={side === "b" ? "black" : "white"}
-                customArrows={arrows}
+                customArrows={exploreFen ? [] : arrows}
                 customBoardStyle={{ borderRadius: 0 }}
                 customDarkSquareStyle={{ backgroundColor: "#4E5B4C" }}
                 customLightSquareStyle={{ backgroundColor: "#D7CFB8" }}
@@ -167,6 +214,15 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
               />
             </div>
           </div>
+
+          {exploreFen && (
+            <p className="notice study-hint">
+              직접 둬 보는 중입니다. 실전 기보와는 다른 수순이에요.{" "}
+              <button className="btn" onClick={() => setExploreFen(null)}>
+                실제 수순으로 돌아가기
+              </button>
+            </p>
+          )}
 
           <div className="actions">
             <button className="btn" onClick={() => setViewIndex(0)} disabled={viewIndex === 0}>
@@ -213,7 +269,7 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
             </div>
           )}
 
-          {review && (
+          {review && !exploreFen && (
             <div className={`field ply-detail tag-${review.tag}`}>
               <p className="ply-head">
                 {moveNumber(viewIndex)} {review.san} · {TAG_LABEL[review.tag]}
@@ -230,6 +286,20 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
                   </strong>{" "}
                   이 더 좋았습니다.
                 </p>
+              )}
+              {review.tag !== "fine" && explainAvailable() && (
+                <>
+                  {!explainText && explainState !== "loading" && (
+                    <button className="btn" onClick={showExplanation}>
+                      왜 그런지 설명 보기
+                    </button>
+                  )}
+                  {explainState === "loading" && <p className="notice">설명을 불러오는 중</p>}
+                  {explainState === "failed" && (
+                    <p className="notice">설명을 불러오지 못했습니다.</p>
+                  )}
+                  {explainText && <p className="idea">{explainText}</p>}
+                </>
               )}
             </div>
           )}

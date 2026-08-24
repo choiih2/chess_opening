@@ -1,9 +1,24 @@
 import { dbGet, dbSet, STORE_IDEAS } from "./db";
 import { ExplorerResult, scoreFor, total } from "./explorer";
-
 import { hasAnthropicKey } from "./env";
+import staticIdeas from "../data/ideas.json";
 
-export const ideasEnabled = hasAnthropicKey;
+const STATIC: Record<string, string> = staticIdeas as Record<string, string>;
+
+const ideaKey = (eco: string, moves: string[]) => `${eco}|${moves.join(" ")}`;
+
+/** src/data/ideas.json 에 미리 써 둔 요약이 있으면 돌려준다. API 호출 없음. */
+export function staticIdea(eco: string, moves: string[]): string | undefined {
+  return STATIC[ideaKey(eco, moves)];
+}
+
+/**
+ * 이 오프닝에 "핵심 아이디어" 섹션을 보여줄 수 있는지.
+ * 정적 데이터가 있으면 무조건 가능하고, 없으면 API 키가 있을 때만 가능하다.
+ */
+export function ideaAvailable(eco: string, moves: string[]): boolean {
+  return Boolean(staticIdea(eco, moves)) || hasAnthropicKey();
+}
 
 export async function fetchIdea(
   eco: string,
@@ -12,7 +27,7 @@ export async function fetchIdea(
   stats: ExplorerResult | null,
   sideToMove: "w" | "b"
 ): Promise<string> {
-  const key = `${eco}|${moves.join(" ")}`;
+  const key = ideaKey(eco, moves);
   const cached = await dbGet<string>(STORE_IDEAS, key);
   if (cached) return cached;
 

@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/api/chesscom/(.*)", "destination": "/api/chesscom-proxy?path=$1" },
     { "source": "/api/explorer/(.*)", "destination": "/api/explorer-proxy?path=$1" },
-    { "source": "/api/anthropic/(.*)", "destination": "/api/anthropic-proxy?path=$1" }
+    { "source": "/api/anthropic/(.*)", "destination": "/api/anthropic-proxy?path=$1" },
+    { "source": "/api/gemini/(.*)", "destination": "/api/gemini-proxy?path=$1" }
   ]
 }

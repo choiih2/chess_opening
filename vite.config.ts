@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   const anthropicKey = env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY;
   const lichessToken = env.LICHESS_TOKEN || process.env.LICHESS_TOKEN;
+  const geminiKey = env.GEMINI_API_KEY || process.env.GEMINI_API_KEY;
 
   const proxy: Record<string, unknown> = {
     "/api/explorer": {
@@ -48,11 +49,25 @@ export default defineConfig(({ mode }) => {
     };
   }
 
+  if (geminiKey) {
+    proxy["/api/gemini"] = {
+      target: "https://generativelanguage.googleapis.com",
+      changeOrigin: true,
+      rewrite: (p: string) => p.replace(/^\/api\/gemini/, ""),
+      configure: (proxy: any) => {
+        proxy.on("proxyReq", (req: any) => {
+          req.setHeader("x-goog-api-key", geminiKey);
+        });
+      },
+    };
+  }
+
   return {
     plugins: [react()],
     define: {
       __HAS_API_KEY__: JSON.stringify(Boolean(anthropicKey)),
       __HAS_LICHESS_TOKEN__: JSON.stringify(Boolean(lichessToken)),
+      __HAS_GEMINI_KEY__: JSON.stringify(Boolean(geminiKey)),
     },
     server: { proxy: proxy as any },
   };

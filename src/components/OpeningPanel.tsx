@@ -6,7 +6,8 @@ import {
   scoreFor,
   total,
 } from "../lib/explorer";
-import { fetchIdea, ideasEnabled } from "../lib/ideas";
+import { fetchIdea, ideaAvailable, staticIdea } from "../lib/ideas";
+import { hasAnthropicKey } from "../lib/env";
 import WinBar from "./WinBar";
 
 interface Props {
@@ -42,9 +43,11 @@ function pgnLine(moves: string[]) {
 function Idea({ node, stats, sideToMove }: Pick<Props, "node" | "stats" | "sideToMove">) {
   const [text, setText] = useState<string | null>(null);
   const [state, setState] = useState<"idle" | "loading" | "failed">("idle");
+  const preset = staticIdea(node.eco, node.moves);
 
   useEffect(() => {
-    if (!ideasEnabled()) return;
+    if (preset) return; // 정적 데이터가 있으면 API 를 아예 부르지 않는다.
+    if (!hasAnthropicKey()) return;
     let alive = true;
     setText(null);
     setState("loading");
@@ -55,9 +58,18 @@ function Idea({ node, stats, sideToMove }: Pick<Props, "node" | "stats" | "sideT
       alive = false;
     };
     // stats 는 첫 로드 후 바뀌지 않으므로 노드 기준으로만 다시 부른다.
-  }, [node.id]);
+  }, [node.id, preset]);
 
-  if (!ideasEnabled() || state === "failed") return null;
+  if (preset) {
+    return (
+      <section className="block">
+        <h3 className="eyebrow">핵심 아이디어</h3>
+        <p className="idea">{preset}</p>
+      </section>
+    );
+  }
+
+  if (!ideaAvailable(node.eco, node.moves) || state === "failed") return null;
 
   return (
     <section className="block">
