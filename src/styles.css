@@ -1182,11 +1182,17 @@ input {
   .review-shell {
     padding: 20px;
   }
+  .game-row {
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
   .game-row .opp {
-    flex-basis: 120px;
+    flex: 1 1 auto;
   }
   .game-row .nm {
-    display: none;
+    flex: 1 1 100%;
+    white-space: normal;
+    font-size: 12px;
   }
 }
 

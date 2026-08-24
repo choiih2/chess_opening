@@ -1,25 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Chess } from "chess.js";
-import {
-  ChesscomGame,
-  fetchArchiveMonths,
-  fetchMonthGames,
-  loadChesscomUsername,
-  myColor,
-  myResult,
-  saveChesscomUsername,
-  timeClassLabel,
-} from "../lib/chesscom";
+import { ChesscomGame, myColor, myResult, timeClassLabel } from "../lib/chesscom";
 import { OpeningNode, identifyOpening } from "../lib/openingTree";
 import { toKorean } from "../lib/i18n";
 
 interface Props {
   byId: Map<string, OpeningNode>;
+  username: string | null | undefined; // undefined = 저장된 아이디 불러오는 중
+  games: ChesscomGame[];
+  loading: boolean;
+  error: string | null;
+  onSubmitUsername: (name: string) => void;
+  onSwitchUser: () => void;
+  onRefresh: () => void;
   onPick: (game: ChesscomGame, username: string) => void;
   onHome: () => void;
 }
-
-const RECENT_LIMIT = 10;
 
 function fmtDate(unixSeconds: number) {
   const d = new Date(unixSeconds * 1000);
@@ -38,53 +34,24 @@ function openingOf(pgn: string, byId: Map<string, OpeningNode>): OpeningNode | n
   }
 }
 
-/** 최신 달부터 훑으며 최근 대국을 RECENT_LIMIT 개 모을 때까지 이어서 불러온다. */
-async function loadRecentGames(user: string): Promise<ChesscomGame[]> {
-  const monthList = await fetchArchiveMonths(user); // 최신 달이 앞
-  const collected: ChesscomGame[] = [];
-  for (const m of monthList) {
-    if (collected.length >= RECENT_LIMIT) break;
-    const monthGames = (await fetchMonthGames(user, m.year, m.month)).filter(
-      (g) => g.rules === "chess"
-    );
-    collected.push(...monthGames);
-  }
-  return collected.sort((a, b) => b.end_time - a.end_time).slice(0, RECENT_LIMIT);
-}
-
-export default function GameList({ byId, onPick, onHome }: Props) {
-  const [username, setUsername] = useState<string | null | undefined>(undefined); // undefined = 로딩 중
+export default function GameList({
+  byId,
+  username,
+  games,
+  loading,
+  error,
+  onSubmitUsername,
+  onSwitchUser,
+  onRefresh,
+  onPick,
+  onHome,
+}: Props) {
   const [input, setInput] = useState("");
-  const [games, setGames] = useState<ChesscomGame[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  useEffect(() => {
-    loadChesscomUsername().then((u) => setUsername(u));
-  }, []);
-
-  useEffect(() => {
-    if (!username) return;
-    let alive = true;
-    setLoading(true);
-    setError(null);
-
-    loadRecentGames(username)
-      .then((found) => alive && setGames(found))
-      .catch((e: Error) => alive && setError(e.message))
-      .finally(() => alive && setLoading(false));
-
-    return () => {
-      alive = false;
-    };
-  }, [username, refreshKey]);
 
   function submitUsername() {
     const name = input.trim();
     if (!name) return;
-    void saveChesscomUsername(name);
-    setUsername(name);
+    onSubmitUsername(name);
   }
 
   if (username === undefined) {
@@ -125,14 +92,14 @@ export default function GameList({ byId, onPick, onHome }: Props) {
         <button className="home-link" onClick={onHome}>
           ‹ 모드 선택
         </button>
-        <button className="home-link" onClick={() => setUsername(null)}>
+        <button className="home-link" onClick={onSwitchUser}>
           다른 아이디 쓰기
         </button>
       </div>
       <p className="eyebrow">복기 · {username}</p>
       <div className="review-head">
         <h1>최근 대국 {games.length ? `${games.length}개` : ""}</h1>
-        <button className="btn" onClick={() => setRefreshKey((k) => k + 1)} disabled={loading}>
+        <button className="btn" onClick={onRefresh} disabled={loading}>
           {loading ? "불러오는 중…" : "새로고침"}
         </button>
       </div>

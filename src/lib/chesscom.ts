@@ -99,6 +99,22 @@ export async function fetchMonthGames(
   return games;
 }
 
+export const RECENT_LIMIT = 20;
+
+/** 최신 달부터 훑으며 최근 대국을 RECENT_LIMIT 개 모을 때까지 이어서 불러온다. */
+export async function loadRecentGames(user: string): Promise<ChesscomGame[]> {
+  const monthList = await fetchArchiveMonths(user); // 최신 달이 앞
+  const collected: ChesscomGame[] = [];
+  for (const m of monthList) {
+    if (collected.length >= RECENT_LIMIT) break;
+    const monthGames = (await fetchMonthGames(user, m.year, m.month)).filter(
+      (g) => g.rules === "chess"
+    );
+    collected.push(...monthGames);
+  }
+  return collected.sort((a, b) => b.end_time - a.end_time).slice(0, RECENT_LIMIT);
+}
+
 export function myColor(game: ChesscomGame, username: string): "w" | "b" | null {
   const u = username.toLowerCase();
   if (game.white.username.toLowerCase() === u) return "w";
