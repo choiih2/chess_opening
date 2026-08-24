@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Chess } from "chess.js";
 import {
-  ArchiveMonth,
   ChesscomGame,
   fetchArchiveMonths,
   fetchMonthGames,
@@ -20,6 +19,8 @@ interface Props {
   onHome: () => void;
 }
 
+const RECENT_LIMIT = 10;
+
 function fmtDate(unixSeconds: number) {
   const d = new Date(unixSeconds * 1000);
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(
@@ -37,33 +38,23 @@ function openingOf(pgn: string, byId: Map<string, OpeningNode>): OpeningNode | n
   }
 }
 
-/** cursor 부터 시작해, 대국이 하나라도 나오거나 달이 바닥날 때까지 이어서 불러온다. */
-async function loadMoreMonths(
-  user: string,
-  monthList: ArchiveMonth[],
-  fromCursor: number
-): Promise<{ cursor: number; games: ChesscomGame[] }> {
-  let cursor = fromCursor;
-  let found: ChesscomGame[] = [];
-  while (cursor < monthList.length) {
-    const m = monthList[cursor];
-    cursor++;
+/** 최신 달부터 훑으며 최근 대국을 RECENT_LIMIT 개 모을 때까지 이어서 불러온다. */
+async function loadRecentGames(user: string): Promise<ChesscomGame[]> {
+  const monthList = await fetchArchiveMonths(user); // 최신 달이 앞
+  const collected: ChesscomGame[] = [];
+  for (const m of monthList) {
+    if (collected.length >= RECENT_LIMIT) break;
     const monthGames = (await fetchMonthGames(user, m.year, m.month)).filter(
       (g) => g.rules === "chess"
     );
-    if (monthGames.length) {
-      found = monthGames;
-      break;
-    }
+    collected.push(...monthGames);
   }
-  return { cursor, games: found };
+  return collected.sort((a, b) => b.end_time - a.end_time).slice(0, RECENT_LIMIT);
 }
 
 export default function GameList({ byId, onPick, onHome }: Props) {
   const [username, setUsername] = useState<string | null | undefined>(undefined); // undefined = 로딩 중
   const [input, setInput] = useState("");
-  const [months, setMonths] = useState<ArchiveMonth[]>([]);
-  const [monthCursor, setMonthCursor] = useState(0);
   const [games, setGames] = useState<ChesscomGame[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -78,17 +69,9 @@ export default function GameList({ byId, onPick, onHome }: Props) {
     setLoading(true);
     setError(null);
     setGames([]);
-    setMonthCursor(0);
 
-    (async () => {
-      const monthList = await fetchArchiveMonths(username);
-      if (!alive) return;
-      setMonths(monthList);
-      const { cursor, games: found } = await loadMoreMonths(username, monthList, 0);
-      if (!alive) return;
-      setGames(found);
-      setMonthCursor(cursor);
-    })()
+    loadRecentGames(username)
+      .then((found) => alive && setGames(found))
       .catch((e: Error) => alive && setError(e.message))
       .finally(() => alive && setLoading(false));
 
@@ -96,19 +79,6 @@ export default function GameList({ byId, onPick, onHome }: Props) {
       alive = false;
     };
   }, [username]);
-
-  function handleLoadMore() {
-    if (!username || loading) return;
-    setLoading(true);
-    setError(null);
-    loadMoreMonths(username, months, monthCursor)
-      .then(({ cursor, games: found }) => {
-        setGames((prev) => [...prev, ...found]);
-        setMonthCursor(cursor);
-      })
-      .catch((e: Error) => setError(e.message))
-      .finally(() => setLoading(false));
-  }
 
   function submitUsername() {
     const name = input.trim();
@@ -160,8 +130,9 @@ export default function GameList({ byId, onPick, onHome }: Props) {
         </button>
       </div>
       <p className="eyebrow">복기 · {username}</p>
-      <h1>대국을 고르세요</h1>
+      <h1>최근 대국 {games.length ? `${games.length}개` : ""}</h1>
 
+      {loading && <p className="notice">불러오는 중…</p>}
       {error && <p className="notice">{error}</p>}
 
       <ul className="game-list">
@@ -195,12 +166,6 @@ export default function GameList({ byId, onPick, onHome }: Props) {
 
       {games.length === 0 && !loading && !error && (
         <p className="notice">불러올 대국이 없습니다.</p>
-      )}
-
-      {monthCursor < months.length && (
-        <button className="btn" onClick={handleLoadMore} disabled={loading}>
-          {loading ? "불러오는 중…" : "이전 달 더 보기"}
-        </button>
       )}
     </div>
   );
