@@ -11,7 +11,9 @@ export default async function handler(req, res) {
     const body = await upstream.text();
     res.status(upstream.status);
     res.setHeader("Content-Type", "application/json; charset=utf-8");
-    res.setHeader("Cache-Control", "public, s-maxage=3600");
+    // 이번 달 대국 목록처럼 계속 바뀌는 응답이 CDN 에 오래 눌러앉지 않도록 캐싱하지 않는다.
+    // (지난 달처럼 안 바뀌는 데이터의 캐싱은 클라이언트 쪽 IndexedDB 가 이미 맡고 있다.)
+    res.setHeader("Cache-Control", "no-store");
     return res.send(body);
   } catch (e) {
     return res.status(502).json({ error: `Chess.com 연결 실패: ${e.message}` });
