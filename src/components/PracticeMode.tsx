@@ -93,9 +93,12 @@ export default function PracticeMode({
   const [picked, setPicked] = useState<Square | null>(null);
   const board = useBoardWidth();
   const [winStats, setWinStats] = useState<ExplorerResult | null>(null);
-  // 상대의 블런더(??)나 내 탁월한 수(!!)를 마지막 수 자리에 표시한다.
-  const [moveBadge, setMoveBadge] = useState<SquareBadge | null>(null);
-  const badgeToken = useRef(0);
+  // 내 마지막 수와 상대 마지막 수에 각각 따로 배지를 붙인다. 하나로 합쳐 두면
+  // 내가 두자마자 곧바로 상대가 응수하면서 내 배지가 뜨기도 전에 지워졌었다.
+  const [myBadge, setMyBadge] = useState<SquareBadge | null>(null);
+  const [oppBadge, setOppBadge] = useState<SquareBadge | null>(null);
+  const myBadgeToken = useRef(0);
+  const oppBadgeToken = useRef(0);
 
   // 워커를 미리 띄워 둔다. 첫 힌트 요청에서 엔진 파일(약 7MB) 로딩을 기다리지 않도록.
   useEffect(() => {
@@ -111,23 +114,32 @@ export default function PracticeMode({
     setHintLoading(false);
   }, []);
 
-  const clearBadge = useCallback(() => {
-    badgeToken.current++; // 진행 중인 채점이 있었다면 응답이 와도 무시된다.
-    setMoveBadge(null);
+  /** which 이 "mine" 이면 내 배지만, "opp" 면 상대 배지만, 생략하면 둘 다 지운다. */
+  const clearBadge = useCallback((which?: "mine" | "opp") => {
+    if (which !== "opp") {
+      myBadgeToken.current++; // 진행 중인 채점이 있었다면 응답이 와도 무시된다.
+      setMyBadge(null);
+    }
+    if (which !== "mine") {
+      oppBadgeToken.current++;
+      setOppBadge(null);
+    }
   }, []);
 
-  /** 방금 둔 수를 백그라운드에서 채점해, 상대 블런더는 ??, 내 탁월한 수는 !! 로 표시한다. */
+  /** 방금 둔 수를 백그라운드에서 채점해, 블런더는 ??, 탁월한 수는 !! 로 표시한다. */
   const classifyLastMove = useCallback(
     (beforeFen: string, afterFen: string, playedUci: string, mover: "w" | "b") => {
-      const myToken = ++badgeToken.current;
+      const isMine = mover === side;
+      const tokenRef = isMine ? myBadgeToken : oppBadgeToken;
+      const myToken = ++tokenRef.current;
       classifyMove(beforeFen, afterFen, playedUci)
         .then((result) => {
-          if (badgeToken.current !== myToken) return; // 그 사이 다른 수가 진행됐다
-          if (mover !== side && result.tag === "blunder") {
-            setMoveBadge({ square: arrowSquares(playedUci)[1], text: "??" });
-          } else if (mover === side && result.brilliant) {
-            setMoveBadge({ square: arrowSquares(playedUci)[1], text: "!!" });
-          }
+          if (tokenRef.current !== myToken) return; // 그 사이 같은 편이 다른 수를 뒀다
+          let badge: SquareBadge | null = null;
+          if (result.tag === "blunder") badge = { square: arrowSquares(playedUci)[1], text: "??" };
+          else if (result.brilliant) badge = { square: arrowSquares(playedUci)[1], text: "!!" };
+          if (isMine) setMyBadge(badge);
+          else setOppBadge(badge);
         })
         .catch(() => {});
     },
@@ -300,7 +312,7 @@ export default function PracticeMode({
     setFeedback(`상대(엔진): ${san} — 정석 범위를 벗어나 엔진이 대신 뒀습니다.`);
     setArrows([]);
     clearHints();
-    clearBadge();
+    clearBadge("opp");
     classifyLastMove(before, g.fen(), picked.uci, mover);
     setStatus({ kind: "playing" });
   }
@@ -342,7 +354,7 @@ export default function PracticeMode({
             );
             setArrows([]);
             clearHints();
-            clearBadge();
+            clearBadge("opp");
             classifyLastMove(before, g.fen(), picked.move.uci, mover);
             setStatus({ kind: "playing" });
             return;
@@ -389,7 +401,7 @@ export default function PracticeMode({
     const expected = repertoire[before];
     setAttempts((n) => n + 1);
     clearHints();
-    clearBadge();
+    clearBadge("mine");
 
     if (!expected || expected.length === 0) {
       setUnknownFen({ fen: before, san: played.san });
@@ -513,7 +525,7 @@ export default function PracticeMode({
             )}
             <div className="board-badge-layer">
               <BoardBadges
-                badges={moveBadge ? [moveBadge] : []}
+                badges={[myBadge, oppBadge].filter((b): b is SquareBadge => b !== null)}
                 boardWidth={board.width}
                 orientation={side === "w" ? "white" : "black"}
               />
