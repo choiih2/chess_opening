@@ -38,6 +38,9 @@ export interface PlyReview {
   bestUci: string;
   /** 둔 수 자체가 다른 후보보다 확실히 튀는 "탁월한 수" 였다면. */
   brilliant: boolean;
+  /** 이 수를 둔 직후 국면에서 엔진이 보는 최선 응수 수순 (uci). 실수/블런더를
+   * 어떻게 응징하는지 보여줄 때 쓴다. */
+  refutation: string[];
 }
 
 export interface MoveClassification {
@@ -82,7 +85,6 @@ export interface ReviewProgress {
   total: number;
 }
 
-export const DEFAULT_MAX_PLIES = 60; // 30수. 오프닝~초반 미들게임 범위.
 export const DEFAULT_MOVETIME_MS = 500;
 
 export async function reviewGame(
@@ -90,7 +92,8 @@ export async function reviewGame(
   opts: { maxPlies?: number; movetimeMs?: number } = {},
   onProgress?: (p: ReviewProgress) => void
 ): Promise<PlyReview[]> {
-  const maxPlies = Math.min(moves.length, opts.maxPlies ?? DEFAULT_MAX_PLIES);
+  // maxPlies 를 안 주면 대국 전체를 분석한다 (수당 movetimeMs 만큼 걸린다).
+  const maxPlies = Math.min(moves.length, opts.maxPlies ?? moves.length);
   const movetimeMs = opts.movetimeMs ?? DEFAULT_MOVETIME_MS;
   if (maxPlies === 0) return [];
 
@@ -132,6 +135,7 @@ export async function reviewGame(
       trap,
       bestUci: before[0].uci,
       brilliant: brilliant?.line.uci === moves[i].lan,
+      refutation: after[0]?.pv ?? [],
     });
   }
 

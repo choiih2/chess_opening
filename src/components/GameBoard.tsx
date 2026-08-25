@@ -6,7 +6,7 @@ import { OpeningNode, identifyOpening } from "../lib/openingTree";
 import { toKorean } from "../lib/i18n";
 import { DEFAULT_OPTIONS, ExplorerResult, fetchExplorer } from "../lib/explorer";
 import {
-  DEFAULT_MAX_PLIES,
+  DEFAULT_MOVETIME_MS,
   PlyReview,
   ReviewInputMove,
   ReviewProgress,
@@ -71,6 +71,7 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
   const [exploreFen, setExploreFen] = useState<string | null>(null);
   const [explainText, setExplainText] = useState<string | null>(null);
   const [explainState, setExplainState] = useState<"idle" | "loading" | "failed">("idle");
+  const [showPunish, setShowPunish] = useState(false);
   const board = useBoardWidth();
 
   const total = parsed.moves.length;
@@ -85,6 +86,7 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
     setExploreFen(null);
     setExplainText(null);
     setExplainState("idle");
+    setShowPunish(false);
   }, [viewIndex]);
 
   async function showExplanation() {
@@ -149,6 +151,28 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
   }
 
   const traps = useMemo(() => (analysis ?? []).filter((r) => r.trap), [analysis]);
+
+  // review 가 가리키는 수(=upcoming)를 실제로 두면 어떻게 응징당하는지 보여줄 수순.
+  const punishLine = useMemo(() => {
+    if (!review || !upcoming || review.refutation.length === 0) return [];
+    const g = new Chess(upcoming.after);
+    const steps: { fen: string; san: string }[] = [];
+    for (const uci of review.refutation) {
+      let mv;
+      try {
+        mv = g.move({
+          from: uci.slice(0, 2),
+          to: uci.slice(2, 4),
+          promotion: uci.length > 4 ? uci.slice(4) : undefined,
+        });
+      } catch {
+        break;
+      }
+      if (!mv) break;
+      steps.push({ fen: g.fen(), san: mv.san });
+    }
+    return steps;
+  }, [review, upcoming]);
 
   const showAlt = review && (review.tag !== "fine" || review.trap);
   // 방금 둔 수(현재 국면 직전 수)에 ??/!! 표시를 얹는다.
@@ -276,8 +300,9 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
                 {analyzing ? "분석 중…" : "이 판 분석하기"}
               </button>
               <p className="hint">
-                처음 최대 {DEFAULT_MAX_PLIES / 2}수까지, 수마다 엔진을 짧게 돌려 실수와
-                함정 지점을 찾습니다. 대국 하나당 20~30초 정도 걸립니다.
+                처음부터 끝까지 (총 {Math.ceil(total / 2)}수), 수마다 엔진을 짧게 돌려
+                실수와 함정 지점을 찾습니다. 약{" "}
+                {Math.round(((total + 1) * DEFAULT_MOVETIME_MS) / 1000)}초 정도 걸립니다.
               </p>
               {analyzing && progress && (
                 <div className="progress-bar">
@@ -323,8 +348,31 @@ export default function GameBoard({ game, username, byId, onBack, onHome }: Prop
             </div>
           )}
 
-          {viewIndex >= (analysis?.length ?? 0) && analysis && viewIndex < total && (
-            <p className="notice">이후 수순은 분석 범위(첫 {DEFAULT_MAX_PLIES / 2}수)를 벗어났습니다.</p>
+          {review && review.tag !== "fine" && punishLine.length > 0 && (
+            <div className="field punish-block">
+              <button className="btn" onClick={() => setShowPunish((v) => !v)}>
+                {showPunish ? "응징 수순 접기" : "응징 수순 보기"}
+              </button>
+              {showPunish && (
+                <>
+                  <p className="hint">
+                    {review.san} 을 그대로 두면, 엔진 기준 이렇게 응징당합니다. 수를
+                    눌러 보드에서 확인하세요.
+                  </p>
+                  <ol className="punish-list">
+                    {punishLine.slice(0, 8).map((step, i) => (
+                      <li key={i}>
+                        <button onClick={() => setExploreFen(step.fen)}>
+                          {(i === 0 || (viewIndex + 1 + i) % 2 === 0) &&
+                            `${moveNumber(viewIndex + 1 + i)} `}
+                          {step.san}
+                        </button>
+                      </li>
+                    ))}
+                  </ol>
+                </>
+              )}
+            </div>
           )}
         </div>
 

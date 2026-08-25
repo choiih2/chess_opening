@@ -1178,6 +1178,36 @@ input {
   border-left-color: var(--good);
 }
 
+.punish-block {
+  border-left: 2px solid var(--bad);
+  padding-left: 12px;
+}
+
+.punish-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.punish-list button {
+  background: var(--raise);
+  border: 1px solid var(--line);
+  color: var(--bone);
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.punish-list button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 @media (max-width: 860px) {
   .review-shell {
     padding: 20px;
