@@ -7,7 +7,7 @@ import {
   total,
 } from "../lib/explorer";
 import { fetchIdea, ideaAvailable, staticIdea } from "../lib/ideas";
-import { hasAnthropicKey } from "../lib/env";
+import { hasGeminiKey } from "../lib/env";
 import WinBar from "./WinBar";
 
 interface Props {
@@ -47,7 +47,7 @@ function Idea({ node, stats, sideToMove }: Pick<Props, "node" | "stats" | "sideT
 
   useEffect(() => {
     if (preset) return; // 정적 데이터가 있으면 API 를 아예 부르지 않는다.
-    if (!hasAnthropicKey()) return;
+    if (!hasGeminiKey()) return;
     let alive = true;
     setText(null);
     setState("loading");

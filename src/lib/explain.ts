@@ -1,9 +1,7 @@
 import { dbGet, dbSet, STORE_IDEAS } from "./db";
-import { hasGeminiKey } from "./env";
+import { geminiAvailable, generateText } from "./gemini";
 
-export const explainAvailable = hasGeminiKey;
-
-const GEMINI_MODEL = "gemini-3.7-flash";
+export const explainAvailable = geminiAvailable;
 
 const explainKey = (fenBefore: string, playedSan: string, betterSan: string) =>
   `mistake|${fenBefore}|${playedSan}|${betterSan}`;
@@ -36,23 +34,7 @@ export async function explainMistake(
 
 체스 좌표(FEN)를 그대로 언급하지 말고, 머리말이나 목록 없이 문단으로만 답하세요.`;
 
-  const res = await fetch(
-    `/api/gemini/v1beta/models/${GEMINI_MODEL}:generateContent`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-      }),
-    }
-  );
-
-  if (!res.ok) throw new Error(`설명을 불러오지 못했습니다 (${res.status})`);
-  const data = await res.json();
-  const text: string =
-    data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? "";
-
-  if (!text) throw new Error("설명이 비어 있습니다");
+  const text = await generateText(prompt, "설명");
   await dbSet(STORE_IDEAS, key, text);
   return text;
 }

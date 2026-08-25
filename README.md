@@ -25,7 +25,8 @@ cp .env.example .env
 상대 수를 고르지 못합니다. <https://lichess.org/account/oauth/token/create> 에서
 이름만 적고 만들면 됩니다. 권한은 하나도 체크할 필요가 없습니다.
 
-**ANTHROPIC_API_KEY (선택)** — "핵심 아이디어" 요약용. 없으면 그 섹션만 숨습니다.
+**GEMINI_API_KEY (선택)** — "핵심 아이디어" 요약, 복기 모드 실수 설명용.
+없으면 그 섹션들만 숨습니다.
 
 두 값 모두 Vite 개발 서버가 프록시하면서 헤더로 붙이므로 **브라우저 번들에
 들어가지 않습니다**(`vite.config.ts`의 `server.proxy`). 정적 호스팅으로 배포할
@@ -41,7 +42,7 @@ src/lib/env.ts               .env 플래그
 src/lib/explorer.ts          Lichess Explorer 클라이언트 (순차 큐 + IndexedDB 캐시)
 src/lib/practice.ts          상대 수 선택 알고리즘 4종
 src/lib/repertoire.ts        레퍼토리 / 약점 목록 저장
-src/lib/ideas.ts             Claude API 요약 + 캐싱
+src/lib/ideas.ts             Gemini API 요약 + 캐싱
 src/lib/db.ts                IndexedDB 래퍼 (의존성 없음)
 src/components/              트리, 상세 패널, 연습 모드, 승패 막대
 ```

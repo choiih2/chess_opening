@@ -1,6 +1,6 @@
 import { dbGet, dbSet, STORE_IDEAS } from "./db";
 import { ExplorerResult, scoreFor, total } from "./explorer";
-import { hasAnthropicKey } from "./env";
+import { geminiAvailable, generateText } from "./gemini";
 import staticIdeas from "../data/ideas.json";
 
 const STATIC: Record<string, string> = staticIdeas as Record<string, string>;
@@ -17,7 +17,7 @@ export function staticIdea(eco: string, moves: string[]): string | undefined {
  * 정적 데이터가 있으면 무조건 가능하고, 없으면 API 키가 있을 때만 가능하다.
  */
 export function ideaAvailable(eco: string, moves: string[]): boolean {
-  return Boolean(staticIdea(eco, moves)) || hasAnthropicKey();
+  return Boolean(staticIdea(eco, moves)) || geminiAvailable();
 }
 
 export async function fetchIdea(
@@ -53,25 +53,7 @@ ${topMoves ? `\n이 국면에서 실전 통계:\n${topMoves}` : ""}
 
 머리말이나 목록 없이 문단 형태로만 답하세요.`;
 
-  const res = await fetch("/api/anthropic/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-6",
-      max_tokens: 1000,
-      messages: [{ role: "user", content: prompt }],
-    }),
-  });
-
-  if (!res.ok) throw new Error(`요약을 불러오지 못했습니다 (${res.status})`);
-  const data = await res.json();
-  const text: string = (data.content ?? [])
-    .filter((c: { type: string }) => c.type === "text")
-    .map((c: { text: string }) => c.text)
-    .join("\n")
-    .trim();
-
-  if (!text) throw new Error("요약이 비어 있습니다");
+  const text = await generateText(prompt, "요약");
   await dbSet(STORE_IDEAS, key, text);
   return text;
 }
